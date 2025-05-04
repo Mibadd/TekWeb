@@ -23,6 +23,9 @@
             background-color: white;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .main-content {
             flex: 1;
@@ -125,6 +128,20 @@
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
+        /* Styling for the logout button in sidebar */
+        .logout-btn {
+            background-color: #D61C1F;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: auto;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout-btn:hover {
+            background-color: #b0171f;
+        }
     </style>
 </head>
 <body>
@@ -140,6 +157,9 @@
             <a href="#" class="menu-item">Pembayaran</a>
             <a href="#" class="menu-item">Akun</a>
             <a href="#" class="menu-item">Bantuan</a>
+            
+            <!-- Logout Button -->
+            <a href="<?= base_url('auth/logout'); ?>" class="logout-btn">Logout</a>
         </div>
         <div class="main-content">
             <h1>Dashboard</h1>
