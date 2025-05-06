@@ -20,7 +20,7 @@
                <a href="#" class="nav_link">Contact</a>
             </li>
          </ul>
-         <button class="button" id="form-open" aria-label="Open Login/Signup Form">Login / Signup</button>
+         <button class="button" id="form-open" aria-label="Open Login/Signup Form">Login</button>
       </nav>
    </header>
 

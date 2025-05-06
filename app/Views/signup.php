@@ -1,58 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-   <meta charset="UTF-8" />
-   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>Signup</title>
-   <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>" />
-   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <title>Signup</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
-   <header class="header">
-      <nav class="nav">
-         <a href="#" class="nav_logo">Motorku</a>
-         <ul class="nav_items">
-            <li class="nav_item">
-               <a href="#" class="nav_link">Home</a>
-               <a href="#" class="nav_link">Product</a>
-               <a href="#" class="nav_link">Services</a>
-               <a href="#" class="nav_link">Contact</a>
-            </li>
-         </ul>
-      </nav>
-   </header>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <form action="<?= base_url('auth/signup_post') ?>" method="post">
+                    <h2 class="text-center">Signup</h2>
 
-   <section class="home">
-      <div class="form_container">
-         <i class="uil uil-times form_close"></i>
-         <div class="form signup_form">
-            <form action="<?= base_url('auth/signup_post'); ?>" method="POST">
-               <h2>Signup</h2>
-               <?php if (session()->getFlashdata('error')): ?>
-                  <p style="color: red;"><?= session()->getFlashdata('error'); ?></p>
-               <?php endif; ?>
-               <div class="input_box">
-                  <input type="text" name="name" placeholder="Enter your name" required />
-                  <i class="uil uil-user"></i>
-               </div>
-               <div class="input_box">
-                  <input type="email" name="email" placeholder="Enter your email" required />
-                  <i class="uil uil-envelope-alt email"></i>
-               </div>
-               <div class="input_box">
-                  <input type="password" name="password" placeholder="Enter your password" required />
-                  <i class="uil uil-lock password"></i>
-                  <i class="uil uil-eye-slash pw_hide"></i>
-               </div>
-               <button class="button">Signup Now</button>
-               <div class="login_signup">Already have an account? <a href="<?= base_url('auth/login'); ?>" id="login">Login</a></div>
-            </form>
-         </div>
-      </div>
-   </section>
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+                    <?php endif; ?>
 
-   <script src="<?= base_url('js/script.js'); ?>"></script>
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Signup</button>
+
+                    <p class="text-center mt-3">Already have an account? <a href="<?= base_url('auth/login') ?>">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
