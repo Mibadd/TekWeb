@@ -189,14 +189,13 @@
         <div class="menu">
         <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
         <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-        <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
+        <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
         <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
         <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
         <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
-        <a href="<?= base_url('admin/logaktivitas') ?>" class="menu-item">Log Aktivitas</a>
         </div>
         <div class="logout">
-            Logout
+        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
         </div>
     </div>
 

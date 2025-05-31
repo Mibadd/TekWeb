@@ -5,10 +5,11 @@
 <h1>Dashboard</h1>
 
 <div class="dashboard-card">
-    <img src="/api/placeholder/200/150" alt="Motorcycle" class="bike-img">
+<img src="<?= base_url('image/nmax.jpg'); ?>" alt="Motorcycle" class="bike-img">
+
     
     <div class="detail-title">Jarak Tempuh</div>
-    <div class="detail-value">12.345 km</div>
+    <div class="detail-value">23.000 km</div>
     <div class="detail-subtitle">Diupdate dari terakhir service</div>
     
     <div class="info-row">
@@ -51,3 +52,17 @@
 </div>
 
 <?= $this->endSection(); ?>
+
+<style>
+    .account-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.account-info div {
+    margin-bottom: 5px;
+}
+
+</style>

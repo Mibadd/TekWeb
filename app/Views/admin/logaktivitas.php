@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log Aktivitas & Keamanan</title>
+    <title>Log Aktivitas & Keamanan - GOODBIKE</title>
     <style>
         * {
             margin: 0;
@@ -13,24 +13,84 @@
         }
 
         body {
-            background-color: #f5f5f7;
-            padding: 20px;
+            display: flex;
+            background-color: #f5f5f5;
+            height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Sidebar Styles - Diambil dari Dashboard */
+        .sidebar {
+            width: 215px;
+            height: 100vh;
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .logo h1 {
+            color: #e74c3c;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            color: #333;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f5f5f5;
+            text-decoration: none;
+            display: block;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background-color: #f8f9fa;
+        }
+
+        .logout {
+            border-top: 1px solid #e0e0e0;
+            padding: 15px 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Content Styles - Dimodifikasi dari halaman Log Aktivitas */
+        .content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f5f5f7;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+        }
+
+        .content-header h2 {
+            font-size: 24px;
+            color: #1a3153;
+            font-weight: 600;
+        }
+
+        .log-container {
             background-color: white;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             padding: 24px;
-        }
-
-        h1 {
-            color: #1a3153;
-            font-size: 24px;
-            margin-bottom: 24px;
-            font-weight: 600;
         }
 
         .filter-container {
@@ -148,62 +208,86 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Log Aktivitas & Keamanan</h1>
-        
-        <div class="filter-container">
-            <div class="filter-group">
-                <label for="tanggal">Tanggal:</label>
-                <div class="date-input">
-                    <input type="text" id="tanggal" placeholder="hh/bb/tttt">
-                </div>
-            </div>
-            
-            <div class="filter-group">
-                <label for="pengguna">Pengguna:</label>
-                <input type="text" id="pengguna" placeholder="Nama pengguna">
-            </div>
-            
-            <button class="filter-button">Filter</button>
+    <!-- Sidebar - Diambil dari Dashboard -->
+    <div class="sidebar">
+        <div class="logo">
+            <h1>Admin GOODBIKE</h1>
         </div>
-        
-        <table class="log-table">
-            <thead>
-                <tr>
-                    <th>Waktu</th>
-                    <th>Pengguna</th>
-                    <th>Aksi</th>
-                    <th>Keterangan</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2025-05-05 10:12</td>
-                    <td>admin_bengkel</td>
-                    <td>Login</td>
-                    <td>Berhasil masuk</td>
-                    <td class="status-sukses">Sukses</td>
-                </tr>
-                <tr>
-                    <td>2025-05-05 10:15</td>
-                    <td>user01</td>
-                    <td>Hapus Data</td>
-                    <td>Menghapus suku cadang: Kampas Rem</td>
-                    <td class="status-tinjauan">Perlu Tinjauan</td>
-                </tr>
-                <tr>
-                    <td>2025-05-05 10:17</td>
-                    <td>admin_bengkel</td>
-                    <td>Edit</td>
-                    <td>Update stok oli mesin</td>
-                    <td class="status-sukses">Sukses</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="footer-note">
-            Aktivitas dengan status "<span class="warning-text">Perlu Tinjauan</span>" menunjukkan potensi tindakan mencurigakan dan harus diperiksa.
+        <div class="menu">
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item">Dashboard</a>
+            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
+            <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
+            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
+            <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
+            <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
+            <a href="<?= base_url('admin/logaktivitas') ?>" class="menu-item active">Log Aktivitas</a>
+        </div>
+        <div class="logout">
+        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+        </div>
+    </div>
+
+    <!-- Content - Diambil dari halaman Log Aktivitas -->
+    <div class="content">
+        <div class="content-header">
+            <h2>Log Aktivitas & Keamanan</h2>
+        </div>
+
+        <div class="log-container">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="tanggal">Tanggal:</label>
+                    <div class="date-input">
+                        <input type="text" id="tanggal" placeholder="hh/bb/tttt">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="pengguna">Pengguna:</label>
+                    <input type="text" id="pengguna" placeholder="Nama pengguna">
+                </div>
+                
+                <button class="filter-button">Filter</button>
+            </div>
+            
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Waktu</th>
+                        <th>Pengguna</th>
+                        <th>Aksi</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-05-05 10:12</td>
+                        <td>admin_bengkel</td>
+                        <td>Login</td>
+                        <td>Berhasil masuk</td>
+                        <td class="status-sukses">Sukses</td>
+                    </tr>
+                    <tr>
+                        <td>2025-05-05 10:15</td>
+                        <td>user01</td>
+                        <td>Hapus Data</td>
+                        <td>Menghapus suku cadang: Kampas Rem</td>
+                        <td class="status-tinjauan">Perlu Tinjauan</td>
+                    </tr>
+                    <tr>
+                        <td>2025-05-05 10:17</td>
+                        <td>admin_bengkel</td>
+                        <td>Edit</td>
+                        <td>Update stok oli mesin</td>
+                        <td class="status-sukses">Sukses</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="footer-note">
+                Aktivitas dengan status "<span class="warning-text">Perlu Tinjauan</span>" menunjukkan potensi tindakan mencurigakan dan harus diperiksa.
+            </div>
         </div>
     </div>
 </body>

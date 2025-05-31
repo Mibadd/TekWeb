@@ -20,9 +20,20 @@ class Auth extends BaseController
         $user = $userModel->where('email', $email)->first();
 
         if ($user && password_verify($password, $user['password'])) {
-            session()->set('isLoggedIn', true);
-            session()->set('user', $user);
-            return redirect()->to('/dashboard');
+            session()->set([
+                'isLoggedIn' => true,
+                'user_id' => $user['id'],
+                'user_name' => $user['name'],
+                'user_email' => $user['email'],
+                'user_role' => $user['role']
+            ]);
+
+            // Redirect sesuai role
+            if ($user['role'] == 'admin') {
+                return redirect()->to('/admindashboard');
+            } else {
+                return redirect()->to('/dashboard');
+            }
         }
 
         session()->setFlashdata('error', 'Invalid email or password');
@@ -37,29 +48,30 @@ class Auth extends BaseController
     public function signup_post()
     {
         $name = $this->request->getPost('name');
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+    $email = $this->request->getPost('email');
+    $password = $this->request->getPost('password');
 
-        if (empty($name) || empty($email) || empty($password)) {
-            session()->setFlashdata('error', 'All fields are required');
-            return redirect()->to('auth/signup');
-        }
+    if (empty($name) || empty($email) || empty($password)) {
+        session()->setFlashdata('error', 'All fields are required');
+        return redirect()->to('auth/signup');
+    }
 
-        $userModel = new UserModel();
-        if ($userModel->where('email', $email)->first()) {
-            session()->setFlashdata('error', 'Email is already registered');
-            return redirect()->to('auth/signup');
-        }
+    $userModel = new UserModel();
+    if ($userModel->where('email', $email)->first()) {
+        session()->setFlashdata('error', 'Email is already registered');
+        return redirect()->to('auth/signup');
+    }
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $userModel->save([
-            'name'     => $name,
-            'email'    => $email,
-            'password' => $hashedPassword,
-        ]);
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $userModel->save([
+        'name'     => $name,
+        'email'    => $email,
+        'password' => $hashedPassword,
+        'role'     => 'user' // Default role sebagai user
+    ]);
 
-        session()->setFlashdata('success', 'Registration successful. Please login.');
-        return redirect()->to('auth/login');
+    session()->setFlashdata('success', 'Registration successful. Please login.');
+    return redirect()->to('auth/login');
     }
 
     public function logout()

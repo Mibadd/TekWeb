@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bengkel Admin - Manajemen Pengguna</title>
+    <title>Manajemen Pengguna - GOODBIKE</title>
     <style>
         * {
             margin: 0;
@@ -15,8 +15,10 @@
         body {
             display: flex;
             background-color: #f5f5f5;
+            height: 100vh;
         }
         
+        /* Sidebar Styles - Konsisten dengan dashboard */
         .sidebar {
             width: 215px;
             height: 100vh;
@@ -41,7 +43,7 @@
         .menu {
             flex: 1;
             display: flex;
-            flex-direction: column; /* Susunan vertikal */
+            flex-direction: column;
         }
 
         .menu-item {
@@ -50,15 +52,15 @@
             color: #333;
             transition: background-color 0.2s;
             border-bottom: 1px solid #f5f5f5;
-            text-decoration: none; /* Hilangkan underline */
-            display: block; /* Pastikan menu memenuhi lebar penuh */
+            text-decoration: none;
+            display: block;
         }
 
         .menu-item:hover,
         .menu-item.active {
             background-color: #f8f9fa;
         }
-
+        
         .logout {
             border-top: 1px solid #e0e0e0;
             padding: 15px 20px;
@@ -66,71 +68,82 @@
             color: #333;
         }
         
-        .main-content {
+        /* Content Styles */
+        .content {
             flex: 1;
-            margin-left: 215px;
-            padding: 20px;
+            padding: 30px;
+            background-color: #f5f5f7;
+            overflow-y: auto;
         }
         
-        .page-header {
+        .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
-        .page-title {
+        .content-header h2 {
             font-size: 24px;
-            color: #333;
+            color: #1a3153;
+            font-weight: 600;
         }
         
-        .btn-add {
-            background-color: #d32f2f;
+        .add-button {
+            background-color: #e74c3c;
             color: white;
             border: none;
             border-radius: 4px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
         }
         
-        .btn-add:hover {
-            background-color: #b71c1c;
+        .add-button:hover {
+            background-color: #c0392b;
         }
         
-        .btn-add::before {
+        .add-button::before {
             content: "+";
             margin-right: 5px;
             font-size: 18px;
         }
         
+        .user-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+        }
+        
         .user-table {
             width: 100%;
-            background-color: white;
             border-collapse: collapse;
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .user-table th {
-            background-color: #f5f5f5;
+            background-color: #f8fafc;
             text-align: left;
-            padding: 12px 15px;
-            font-weight: 500;
-            color: #333;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .user-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #e2e8f0;
         }
         
-        .user-table tr:last-child td {
-            border-bottom: none;
+        .user-table tr:nth-child(even) {
+            background-color: #fafafa;
         }
         
         .action-links {
@@ -166,9 +179,10 @@
             background-color: white;
             margin: 10% auto;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             width: 500px;
             max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .modal-header {
@@ -176,11 +190,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
         }
         
         .modal-title {
             font-size: 18px;
-            color: #333;
+            color: #1a3153;
+            font-weight: 600;
         }
         
         .close-btn {
@@ -199,11 +216,13 @@
             display: block;
             margin-bottom: 5px;
             color: #555;
+            font-weight: 500;
+            font-size: 14px;
         }
         
         .form-control {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
@@ -211,7 +230,7 @@
         
         .form-select {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
@@ -226,22 +245,31 @@
         }
         
         .btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 4px;
             font-size: 14px;
             cursor: pointer;
             border: none;
+            font-weight: 500;
         }
         
         .btn-primary {
-            background-color: #d32f2f;
+            background-color: #e74c3c;
             color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c0392b;
         }
         
         .btn-secondary {
             background-color: #f5f5f5;
             color: #333;
             border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e5e5e5;
         }
     </style>
 </head>
@@ -252,94 +280,89 @@
             <h1>Admin GOODBIKE</h1>
         </div>
         <div class="menu">
-            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
-            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-            <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item">Dashboard</a>
+            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item active">Manajemen Pengguna</a>
+            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
             <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
             <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
-            <a href="<?= base_url('admin/logaktivitas') ?>" class="menu-item">Log Aktivitas</a>
         </div>
         <div class="logout">
-            Logout
+            <a href="<?= base_url('auth/logout'); ?>" class="menu-item">Logout</a>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="page-header">
-            <h1 class="page-title">Manajemen Pengguna</h1>
-            <button class="btn-add" id="btnTambahPengguna">Tambah Pengguna</button>
+    <!-- Content -->
+    <div class="content">
+        <div class="content-header">
+            <h2>Manajemen Pengguna</h2>
+            <button class="add-button" id="btnTambahPengguna">Tambah Pengguna</button>
         </div>
-        
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Rudi Hartono</td>
-                    <td>rudi@example.com</td>
-                    <td>Admin</td>
-                    <td>
-                        <div class="action-links">
-                            <a href="#" class="edit-link" onclick="openEditModal('Rudi Hartono', 'rudi@example.com', 'Admin')">Edit</a>
-                            <a href="#" class="delete-link" onclick="confirmDelete('Rudi Hartono')">Hapus</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Dina Pratiwi</td>
-                    <td>dina@example.com</td>
-                    <td>Teknisi</td>
-                    <td>
-                        <div class="action-links">
-                            <a href="#" class="edit-link" onclick="openEditModal('Dina Pratiwi', 'dina@example.com', 'Teknisi')">Edit</a>
-                            <a href="#" class="delete-link" onclick="confirmDelete('Dina Pratiwi')">Hapus</a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+        <div class="user-container">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?= esc($user['name']) ?></td>
+                        <td><?= esc($user['email']) ?></td>
+                        <td><?= esc($user['role']) ?></td>
+                        <td>
+                            <div class="action-links">
+                                <a href="#" class="edit-link"
+                                   onclick="openEditModal(this)"
+                                   data-id="<?= $user['id'] ?>"
+                                   data-name="<?= esc($user['name']) ?>"
+                                   data-email="<?= esc($user['email']) ?>"
+                                   data-role="<?= esc($user['role']) ?>">
+                                   Edit
+                                </a>
+                                <a href="#" class="delete-link"
+                                   onclick="confirmDelete(this)"
+                                   data-id="<?= $user['id'] ?>"
+                                   data-name="<?= esc($user['name']) ?>">
+                                   Hapus
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Add User Modal -->
+    <!-- Modal Tambah Pengguna -->
     <div id="addUserModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Tambah Pengguna Baru</h2>
                 <button class="close-btn" onclick="closeModal('addUserModal')">&times;</button>
             </div>
-            <form id="addUserForm">
+            <form id="addUserForm" method="POST" action="<?= base_url('admin/manajemenpengguna/tambah') ?>">
                 <div class="form-group">
                     <label for="nama">Nama</label>
-                    <input type="text" id="nama" class="form-control" required>
+                    <input type="text" id="nama" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" class="form-control" required>
+                    <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="role">Role</label>
-                    <select id="role" class="form-select" required>
+                    <select id="role" name="role" class="form-select" required>
                         <option value="">Pilih Role</option>
                         <option value="Admin">Admin</option>
-                        <option value="Teknisi">Teknisi</option>
-                        <option value="Kasir">Kasir</option>
+                        <option value="User">User</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="konfirmasi_password">Konfirmasi Password</label>
-                    <input type="password" id="konfirmasi_password" class="form-control" required>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('addUserModal')">Batal</button>
@@ -349,33 +372,29 @@
         </div>
     </div>
 
-    <!-- Edit User Modal -->
+    <!-- Modal Edit Pengguna -->
     <div id="editUserModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Edit Pengguna</h2>
                 <button class="close-btn" onclick="closeModal('editUserModal')">&times;</button>
             </div>
-            <form id="editUserForm">
+            <form id="editUserForm" method="POST" action="<?= base_url('admin/manajemenpengguna/edit') ?>">
+                <input type="hidden" id="edit_id" name="id">
                 <div class="form-group">
                     <label for="edit_nama">Nama</label>
-                    <input type="text" id="edit_nama" class="form-control" required>
+                    <input type="text" id="edit_nama" name="name" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="edit_email">Email</label>
-                    <input type="email" id="edit_email" class="form-control" required>
+                    <input type="email" id="edit_email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="edit_role">Role</label>
-                    <select id="edit_role" class="form-select" required>
+                    <select id="edit_role" name="role" class="form-select" required>
                         <option value="Admin">Admin</option>
-                        <option value="Teknisi">Teknisi</option>
-                        <option value="Kasir">Kasir</option>
+                        <option value="User">User</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="edit_password">Password Baru (kosongkan jika tidak ingin mengubah)</label>
-                    <input type="password" id="edit_password" class="form-control">
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('editUserModal')">Batal</button>
@@ -385,90 +404,37 @@
         </div>
     </div>
 
+    <!-- Script -->
     <script>
-        // Show modal function
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
         }
-        
-        // Close modal function
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-        
-        // Open add user modal
+
+        // Buka modal tambah
         document.getElementById('btnTambahPengguna').addEventListener('click', function() {
             openModal('addUserModal');
         });
-        
-        // Open edit user modal with pre-filled data
-        function openEditModal(nama, email, role) {
-            document.getElementById('edit_nama').value = nama;
-            document.getElementById('edit_email').value = email;
-            document.getElementById('edit_role').value = role;
+
+        // Buka modal edit dan isi data
+        function openEditModal(element) {
+            document.getElementById('edit_id').value = element.getAttribute('data-id');
+            document.getElementById('edit_nama').value = element.getAttribute('data-name');
+            document.getElementById('edit_email').value = element.getAttribute('data-email');
+            document.getElementById('edit_role').value = element.getAttribute('data-role');
             openModal('editUserModal');
         }
-        
-        // Confirm delete user
-        function confirmDelete(nama) {
-            if(confirm(`Apakah Anda yakin ingin menghapus pengguna ${nama}?`)) {
-                alert(`Pengguna ${nama} telah dihapus.`);
-                // In a real app, you would send a request to your backend here
-            }
-        }
-        
-        // Form submit handlers
-        document.getElementById('addUserForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const nama = document.getElementById('nama').value;
-            const email = document.getElementById('email').value;
-            const role = document.getElementById('role').value;
-            const password = document.getElementById('password').value;
-            const konfirmasi = document.getElementById('konfirmasi_password').value;
-            
-            // Simple validation
-            if(password !== konfirmasi) {
-                alert('Password dan konfirmasi password tidak sama!');
-                return;
-            }
-            
-            // In a real app, you would send this data to your backend
-            alert(`Pengguna baru telah ditambahkan:\nNama: ${nama}\nEmail: ${email}\nRole: ${role}`);
-            
-            // Close modal and reset form
-            closeModal('addUserModal');
-            this.reset();
-        });
-        
-        document.getElementById('editUserForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const nama = document.getElementById('edit_nama').value;
-            const email = document.getElementById('edit_email').value;
-            const role = document.getElementById('edit_role').value;
-            
-            // In a real app, you would send this data to your backend
-            alert(`Pengguna telah diupdate:\nNama: ${nama}\nEmail: ${email}\nRole: ${role}`);
-            
-            // Close modal
-            closeModal('editUserModal');
-        });
-        
-        // Active menu item
-        document.querySelectorAll('.sidebar-menu li').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = "none";
+
+        // Konfirmasi hapus
+        function confirmDelete(element) {
+            const userId = element.getAttribute('data-id');
+            const userName = element.getAttribute('data-name');
+            if (confirm(`Apakah Anda yakin ingin menghapus pengguna ${userName}?`)) {
+                // Redirect ke controller untuk proses hapus
+                window.location.href = "<?= base_url('admin/manajemenpengguna/hapus') ?>/" + userId;
             }
         }
     </script>

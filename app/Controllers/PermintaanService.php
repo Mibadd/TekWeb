@@ -2,41 +2,70 @@
 
 namespace App\Controllers;
 
+use App\Models\PermintaanService as PermintaanServiceModel;
 use CodeIgniter\Controller;
+use App\Models\ServiceScheduleModel;
 
-class PermintaanService extends BaseController
+
+class PermintaanService extends Controller
 {
     public function index()
     {
-        // Cek apakah pengguna sudah login
-        if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/auth/login')->with('error', 'Please login to access this page.');
-        }
+        // Menampilkan view permintaan service (form)
+        return view('permintaanservice');
+    }
 
-        // Data permintaan service bisa diambil dari model atau database
-        $data = [
-            'permintaan' => [
-                'Permintaan Service A',
-                'Permintaan Service B',
-                'Permintaan Service C'
-            ]
+    public function store()
+    {
+        $permintaanModel = new PermintaanServiceModel();
+        $scheduleModel = new ServiceScheduleModel();
+
+        // Ambil data dari form
+        $dataPermintaan = [
+            'vehicle'      => $this->request->getPost('vehicle'),
+            'service_type' => $this->request->getPost('service_type'),
+            'date'         => $this->request->getPost('date'),
+            'notes'        => $this->request->getPost('notes'),
         ];
 
-        return view('permintaanservice', $data); // Tampilkan halaman permintaan service
+        // Simpan ke permintaan_service dulu
+        if ($permintaanModel->insert($dataPermintaan)) {
+
+            // Ambil ID permintaan yang baru saja disimpan
+            $permintaanId = $permintaanModel->getInsertID();
+
+            // Buat data untuk jadwal service
+            $dataSchedule = [
+                // 'user_id' => session()->get('user_id'), // jika ada user login
+                'date'         => $dataPermintaan['date'],
+                'service_type' => $dataPermintaan['service_type'],
+                'status'       => 'Belum Dilaksanakan',
+            ];
+
+            // Simpan ke service_schedules
+            $scheduleModel->insert($dataSchedule);
+
+            return redirect()->to('/permintaanservice')->with('success', 'Permintaan service dan jadwal berhasil dibuat.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal mengajukan permintaan service.');
+        }
     }
 
-    // Method untuk menangani permintaan service baru
-    public function create()
-    {
-        // Ambil data dari form
-        $serviceType = $this->request->getPost('service_type');
-        $description = $this->request->getPost('description');
 
-        // Simpan permintaan service ke database
-        // Misalnya, simpan ke model yang sesuai (Model PermintaanServiceModel)
+    public function submitRequest()
+{
+    $serviceScheduleModel = new ServiceScheduleModel();
 
-        // Setelah berhasil, beri pesan sukses dan redirect
-        session()->setFlashdata('success', 'Permintaan service berhasil diajukan.');
-        return redirect()->to('permintaanservice');
-    }
+    $data = [
+        'user_id' => session()->get('user_id'),  // jika kamu punya autentikasi
+        'service_date' => $this->request->getPost('service_date'),
+        'service_type' => $this->request->getPost('service_type'),
+        'status' => 'Belum Dilaksanakan',
+    ];
+
+    $serviceScheduleModel->insert($data);
+
+    return redirect()->to('/service-schedule')->with('success', 'Permintaan service berhasil dibuat dan masuk ke jadwal.');
+}
+
 }
