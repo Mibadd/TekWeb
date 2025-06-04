@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bengkel Admin - Laporan & Analitik</title>
-    <style>
-       * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bengkel Admin - Laporan & Analitik</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-body {
-    display: flex;
-    background-color: #f5f5f5;
-}
+    body {
+        display: flex;
+        background-color: #f5f5f5;
+        min-height: 100vh;
+    }
 
-/* Sidebar */
+    /* Sidebar */
 .sidebar {
     width: 215px;
     height: 100vh;
@@ -71,169 +72,239 @@ body {
     color: #333;
 }
 
-/* Main Content */
-.main-content {
-    margin-left: 215px;
-    width: calc(100% - 215px);
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    background-color: #f5f5f5;
-}
-
-.report-container {
-    width: 100%;
-    max-width: 960px;
-    background-color: white;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-/* Header */
-.report-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.page-title {
-    font-size: 24px;
-    color: #333;
-}
-
-.export-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-export-pdf {
-    background-color: #d32f2f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.btn-export-excel {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-/* Filter */
-.filter-container {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.date-range {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.date-input {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 150px;
-}
-
-.btn-filter {
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-/* Table */
-.report-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.report-table th {
-    background-color: #f5f5f5;
-    text-align: left;
-    padding: 12px 15px;
-    font-weight: 500;
-    color: #333;
-    border: 1px solid #e0e0e0;
-}
-
-.report-table td {
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
-}
-
-.report-table tr:nth-child(even) {
-    background-color: #fafafa;
-}
-
-/* Footer */
-.report-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #e0e0e0;
-}
-
-.total-amount {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-
+    /* Main Content */
     .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 15px;
+        margin-left: 215px;
+        width: calc(100% - 215px);
+        padding: 25px 30px;
+        background-color: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
     }
 
     .report-container {
-        padding: 15px;
+        width: 100%;
+        max-width: 960px;
+        background-color: white;
+        border-radius: 6px;
+        padding: 30px 35px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
-}
 
-    </style>
+    /* Header */
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        color: #333;
+        font-weight: 700;
+    }
+
+    .export-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-export-pdf,
+    .btn-export-excel {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-export-excel {
+        background-color: #2e7d32;
+    }
+
+    .btn-export-pdf:hover {
+        background-color: #b62828;
+    }
+
+    .btn-export-excel:hover {
+        background-color: #27662a;
+    }
+
+    /* Filter */
+    .filter-container {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
+    .date-range {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-weight: 600;
+        color: #444;
+        font-size: 14px;
+        min-width: 200px;
+    }
+
+    .date-range label {
+        white-space: nowrap;
+    }
+
+    .date-input {
+        padding: 8px 12px;
+        border: 1.5px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+        width: 160px;
+    }
+
+    .date-input:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+    }
+
+    .btn-filter {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+    }
+
+    .btn-filter:hover {
+        background-color: #145ea8;
+    }
+
+    /* Table */
+    .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+
+    .report-table th {
+        background-color: #f9f9f9;
+        text-align: left;
+        padding: 14px 18px;
+        font-weight: 700;
+        color: #555;
+        border: 1px solid #e0e0e0;
+        user-select: none;
+    }
+
+    .report-table td {
+        padding: 14px 18px;
+        border: 1px solid #e0e0e0;
+        color: #333;
+    }
+
+    .report-table tr:nth-child(even) {
+        background-color: #fbfbfb;
+    }
+
+    .report-table tr:hover {
+        background-color: #f1f7ff;
+    }
+
+    /* Total Pendapatan */
+    .total {
+        margin-top: 25px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1976d2;
+        text-align: right;
+        user-select: none;
+    }
+
+    /* Footer */
+    .report-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .sidebar {
+            display: none;
+        }
+
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px 15px;
+        }
+
+        .report-container {
+            padding: 20px 20px;
+        }
+
+        .filter-container {
+            gap: 10px;
+        }
+
+        .date-range {
+            min-width: unset;
+            font-size: 13px;
+        }
+
+        .date-input {
+            width: 120px;
+            font-size: 13px;
+        }
+
+        .btn-filter {
+            padding: 8px 15px;
+            font-size: 13px;
+        }
+
+        .page-title {
+            font-size: 22px;
+        }
+    }
+</style>
 </head>
 <body>
     <!-- Sidebar -->
-   <div class="sidebar">
+    <div class="sidebar">
         <div class="logo">
             <h1>Admin GOODBIKE</h1>
         </div>
         <div class="menu">
-        <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
-        <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-        <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
-        <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
-        <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
-        <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
+            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
+            <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
+            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
+            <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+            Logout
         </div>
     </div>
 
@@ -242,24 +313,28 @@ body {
         <div class="report-container">
             <div class="report-header">
                 <h1 class="page-title">Laporan & Analitik</h1>
+                <?php
+                $start = isset($_GET['start']) ? $_GET['start'] : '';
+                $end = isset($_GET['end']) ? $_GET['end'] : '';
+                $query = http_build_query(['start' => $start, 'end' => $end]);
+                ?>
+
                 <div class="export-buttons">
-                    <button class="btn-export-pdf" id="exportPDF">Export PDF</button>
-                    <button class="btn-export-excel" id="exportExcel">Export Excel</button>
+                    <a href="<?= base_url('laporan/export-pdf?' . $query) ?>" class="btn-export-pdf">Export PDF</a>
+                    <a href="<?= base_url('laporan/export-excel?' . $query) ?>" class="btn-export-excel">Export Excel</a>
                 </div>
             </div>
-            
+
             <div class="filter-container">
-                <div class="date-range">
-                    <label for="startDate">Dari Tanggal:</label>
-                    <input type="date" id="startDate" class="date-input" placeholder="hh/bb/tttt">
-                </div>
-                <div class="date-range">
-                    <label for="endDate">Sampai Tanggal:</label>
-                    <input type="date" id="endDate" class="date-input" placeholder="hh/bb/tttt">
-                </div>
-                <button class="btn-filter" id="filterBtn">Filter</button>
+                <form action="<?= site_url('laporan/filter') ?>" method="GET"> 
+                    <label>Dari Tanggal:</label>
+                    <input type="date" name="start" value="<?= isset($_GET['start']) ? esc($_GET['start']) : '' ?>">
+                    <label>Sampai Tanggal:</label>
+                    <input type="date" name="end" value="<?= isset($_GET['end']) ? esc($_GET['end']) : '' ?>">
+                    <button type="submit">Filter</button>
+                </form>
             </div>
-            
+
             <table class="report-table">
                 <thead>
                     <tr>
@@ -271,76 +346,59 @@ body {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-05-01</td>
-                        <td>Budi Santoso</td>
-                        <td>Yamaha NMAX</td>
-                        <td>Ganti Oli</td>
-                        <td>75.000</td>
-                    </tr>
-                    <tr>
-                        <td>2025-05-02</td>
-                        <td>Ayu Wulandari</td>
-                        <td>Honda Vario</td>
-                        <td>Servis Lengkap</td>
-                        <td>150.000</td>
-                    </tr>
+                    <?php if (!empty($laporan) && is_array($laporan)): ?>
+                        <?php foreach ($laporan as $item): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($item['tanggal']) ?></td>
+                                <td><?= htmlspecialchars($item['nama_pelanggan']) ?></td>
+                                <td><?= htmlspecialchars($item['kendaraan']) ?></td>
+                                <td><?= htmlspecialchars($item['jenis_servis']) ?></td>
+                                <td><?= number_format($item['total'], 0, ',', '.') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" style="text-align:center; font-style:italic; color:#777;">
+                                Tidak ada data laporan.
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
-            
-            <div class="report-footer">
-                <div class="total-amount">Total Pendapatan: Rp 225.000</div>
+
+            <div class="total">
+                Total Pendapatan: Rp <?= isset($total) ? number_format($total, 0, ',', '.') : '0' ?>
             </div>
         </div>
     </div>
 
-    <script>
-        // Initialize date inputs with placeholders
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set default date range (current month)
-            const today = new Date();
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            
-            // Format dates for input
-            const formatDate = (date) => {
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            };
-            
-            document.getElementById('startDate').value = formatDate(firstDay);
-            document.getElementById('endDate').value = formatDate(lastDay);
-        });
-        
-        // Filter button action
-        document.getElementById('filterBtn').addEventListener('click', function() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            
-            // In a real application, this would fetch data from a server
-            alert(`Filtering data from ${startDate} to ${endDate}`);
-        });
-        
-        // Export buttons actions
-        document.getElementById('exportPDF').addEventListener('click', function() {
-            alert('Exporting report as PDF...');
-            // In a real application, this would generate and download a PDF
-        });
-        
-        document.getElementById('exportExcel').addEventListener('click', function() {
-            alert('Exporting report as Excel...');
-            // In a real application, this would generate and download an Excel file
-        });
-        
-        // Active menu item
-        document.querySelectorAll('.sidebar-menu li').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        const formatDate = (date) => {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        };
+
+        document.getElementById('startDate').value = formatDate(firstDay);
+        document.getElementById('endDate').value = formatDate(lastDay);
+    });
+
+    document.getElementById('filterBtn').addEventListener('click', function() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
+        alert(`Filtering data dari ${startDate} sampai ${endDate}`);
+        // TODO: Tambahkan logika AJAX atau form submit untuk filter data sebenarnya
+    });
+
+    // Jika ingin menambah event untuk tombol export (saat menggunakan tombol bukan <a>)
+    // Karena tombol export ini menggunakan <a>, tidak perlu event tambahan.
+</script>
 </body>
 </html>

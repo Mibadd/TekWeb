@@ -9,13 +9,22 @@ use Dompdf\Dompdf;
 
 class LaporanController extends BaseController
 {
+
+    protected $laporanModel;
+
+    public function __construct()
+    {
+        $this->laporanModel = new LaporanModel();
+    }
+
     public function index()
     {
         $model = new LaporanModel();
-        $data['laporan'] = $model->getLaporan();
-        $data['total'] = $model->getTotalPendapatan();
+        $data['laporan'] = $this->laporanModel->getLaporan();
+        $data['total'] = $this->laporanModel->getTotalPendapatan();
         return view('admin/laporan', $data);
     }
+
 
     public function filter()
     {
@@ -32,9 +41,13 @@ class LaporanController extends BaseController
     {
         require_once ROOTPATH . 'vendor/autoload.php';
 
+        // Ambil parameter filter dari URL
+        $start = $this->request->getGet('start');
+        $end = $this->request->getGet('end');
+
         $model = new LaporanModel();
-        $data['laporan'] = $model->getLaporan();
-        $data['total'] = $model->getTotalPendapatan();
+        $data['laporan'] = $model->getLaporan($start, $end);
+        $data['total'] = $model->getTotalPendapatan($start, $end);
 
         $dompdf = new Dompdf();
         $html = view('admin/laporan/pdf', $data);
@@ -44,31 +57,31 @@ class LaporanController extends BaseController
         $dompdf->stream('laporan.pdf');
     }
 
+
     public function exportExcel()
     {
-        
+        $start = $this->request->getGet('start');
+        $end = $this->request->getGet('end');
+
         $model = new LaporanModel();
-        // Ambil data (bisa pakai filter tanggal jika mau)
-        $laporan = $model->getLaporan();
+        $laporan = $model->getLaporan($start, $end);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Header tabel
         $header = ['Tanggal', 'Nama Pelanggan', 'Kendaraan', 'Jenis Servis', 'Total (IDR)'];
 
-        // Styling header
         $sheet->getStyle('A1:E1')->applyFromArray([
             'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                       'startColor' => ['rgb' => '1976D2']],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '1976D2']
+            ],
             'borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]],
         ]);
 
-        // Isi header
         $sheet->fromArray($header, NULL, 'A1');
 
-        // Isi data mulai dari baris 2
         $row = 2;
         foreach ($laporan as $item) {
             $sheet->setCellValue("A{$row}", $item['tanggal']);
@@ -79,22 +92,15 @@ class LaporanController extends BaseController
             $row++;
         }
 
-        // Format kolom tanggal dan total
-        $sheet->getStyle("A2:A{$row}")->getNumberFormat()
-            ->setFormatCode('yyyy-mm-dd');
+        $sheet->getStyle("A2:A{$row}")->getNumberFormat()->setFormatCode('yyyy-mm-dd');
+        $sheet->getStyle("E2:E{$row}")->getNumberFormat()->setFormatCode('#,##0');
 
-        $sheet->getStyle("E2:E{$row}")->getNumberFormat()
-            ->setFormatCode('#,##0');
-
-        // Auto size kolom
         foreach (range('A', 'E') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
-        // Output file
         $filename = 'laporan_' . date('Ymd_His') . '.xlsx';
 
-        // Set header response agar langsung download
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"{$filename}\"");
         header('Cache-Control: max-age=0');
@@ -103,4 +109,5 @@ class LaporanController extends BaseController
         $writer->save('php://output');
         exit;
     }
+
 }

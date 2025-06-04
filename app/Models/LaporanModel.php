@@ -34,4 +34,30 @@ class LaporanModel extends Model
 
         return $builder->selectSum('total')->get()->getRow()->total ?? 0;
     }
+
+    public function getServisPerBulan()
+{
+    $builder = $this->db->table('servis');
+    $builder->select("DATE_FORMAT(tanggal, '%Y-%m') as bulan, COUNT(*) as jumlah");
+    $builder->groupBy("DATE_FORMAT(tanggal, '%Y-%m')");
+    $builder->orderBy("bulan", 'ASC');
+
+    return $builder->get()->getResultArray();
+}
+
+public function countAllServis()
+{
+    return $this->db->table($this->table)->countAllResults();
+}
+
+public function countPendingRequestsHariIni()
+{
+    $today = date('Y-m-d');
+    return $this->db->table($this->table)
+        ->where('tanggal', $today)
+         // Pastikan kolom `status` ada dan sesuai
+        ->countAllResults();
+}
+
+
 }

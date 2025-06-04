@@ -6,11 +6,17 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2 class="mb-4">Riwayat Pembayaran</h2>
-    <table class="table table-bordered">
-        <thead>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="<?= base_url('/payment') ?>" class="btn btn-primary">← Kembali</a>
+        <h2 class="mb-0 text-center flex-grow-1">Riwayat Pembayaran</h2>
+        <div style="width: 100px;"></div> <!-- spacer supaya judul benar-benar di tengah -->
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
-                <th>No</th>
+                <th style="width: 5%;">No</th>
                 <th>Metode Pembayaran</th>
                 <th>Total</th>
                 <th>Status</th>
@@ -22,9 +28,9 @@
                 <?php foreach($payments as $index => $payment): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td><?= $payment['payment_method'] ?></td>
+                        <td><?= esc($payment['payment_method']) ?></td>
                         <td>Rp <?= number_format($payment['total_amount'], 0, ',', '.') ?></td>
-                        <td><?= $payment['payment_status'] ?></td>
+                        <td><?= esc($payment['payment_status']) ?></td>
                         <td>
                             <?php if($payment['payment_proof']): ?>
                                 <a href="<?= base_url($payment['payment_proof']) ?>" target="_blank">Lihat Bukti</a>

@@ -31,10 +31,10 @@
         cursor: pointer;
     }
     .alert-success {
-        background-color: #4BB543; /* hijau */
+        background-color: #4BB543;
     }
     .alert-error {
-        background-color: #E03E2F; /* merah */
+        background-color: #E03E2F;
     }
     @keyframes slideDown {
         from {
@@ -46,10 +46,145 @@
             transform: translateX(-50%) translateY(0);
         }
     }
+
+    /* New Improved Styles */
+    .service-container {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        background-color: #f8fafc;
+    }
+    
+    .service-card {
+        background: #ffffff;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 600px;
+        border: 1px solid #e2e8f0;
+    }
+    
+    .service-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .service-header h2 {
+        margin: 0;
+        color: #1e293b;
+        font-size: 1.75rem;
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .service-header h2::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: #3b82f6;
+        border-radius: 3px;
+    }
+    
+    .service-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .form-group {
+        position: relative;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #475569;
+        font-size: 0.95rem;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+    
+    .form-control:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        background-color: #ffffff;
+    }
+    
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+    }
+    
+    .submit-button {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.875rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .submit-button:hover {
+        background-color: #2563eb;
+        transform: translateY(-1px);
+    }
+    
+    .submit-button:active {
+        transform: translateY(0);
+    }
+    
+    optgroup {
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+    
+    optgroup option {
+        font-weight: 400;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    @media (max-width: 768px) {
+        .service-container {
+            padding: 1.5rem;
+        }
+        
+        .service-card {
+            padding: 1.5rem;
+        }
+    }
 </style>
 
 <script>
-    // Hilangkan alert otomatis setelah 3 detik
     window.onload = function() {
         const alert = document.getElementById('alert');
         if(alert){
@@ -59,7 +194,6 @@
                 setTimeout(() => alert.remove(), 500);
             }, 3000);
 
-            // Klik alert untuk tutup manual
             alert.addEventListener('click', () => {
                 alert.style.opacity = '0';
                 setTimeout(() => alert.remove(), 500);
@@ -67,8 +201,6 @@
         }
     }
 </script>
-
-
 
 <div class="service-container">
     <div class="service-card">
@@ -79,7 +211,7 @@
         <form class="service-form" action="<?= base_url('/permintaanservice/store'); ?>" method="post">
             <div class="form-group">
                 <label for="vehicle">Pilih Kendaraan</label>
-                <select id="vehicle" name="vehicle" class="form-control">
+                <select id="vehicle" name="vehicle" class="form-control" required>
                     <option value="">-- Pilih Kendaraan --</option>
                     <option value="XMAX 250">XMAX 250</option>
                     <option value="Grand Filano">Grand Filano</option>
@@ -91,23 +223,48 @@
 
             <div class="form-group">
                 <label for="service_type">Jenis Service</label>
-                <select id="service_type" name="service_type" class="form-control">
+                <select id="service_type" name="service_type" class="form-control" required>
                     <option value="">-- Pilih Jenis Service --</option>
-                    <option value="service rutin">Service Rutin</option>
-                    <option value="ganti oli">Ganti Oli</option>
-                    <option value="perbaikan mesin">Perbaikan Mesin</option>
-                    <option value="pemeriksaan rem">Pemeriksaan Rem</option>
+                    <optgroup label="Service Rutin">
+                        <option value="Service Rutin 1000 km">Service Rutin 1000 km</option>
+                        <option value="Service Rutin 4000 km">Service Rutin 4000 km</option>
+                        <option value="Service Rutin 8000 km">Service Rutin 8000 km</option>
+                    </optgroup>
+                    <optgroup label="Perawatan Mesin">
+                        <option value="Ganti Oli Mesin">Ganti Oli Mesin</option>
+                        <option value="Ganti Filter Oli">Ganti Filter Oli</option>
+                        <option value="Ganti Busi">Ganti Busi</option>
+                        <option value="Perbaikan Mesin">Perbaikan Mesin</option>
+                        <option value="Pembersihan Karburator">Pembersihan Karburator</option>
+                        <option value="Pemeriksaan Radiator">Pemeriksaan Radiator</option>
+                    </optgroup>
+                    <optgroup label="Sistem Pengereman">
+                        <option value="Ganti Kampas Rem">Ganti Kampas Rem</option>
+                        <option value="Ganti Cakram Rem">Ganti Cakram Rem</option>
+                        <option value="Ganti Minyak Rem">Ganti Minyak Rem</option>
+                        <option value="Pemeriksaan Sistem Rem">Pemeriksaan Sistem Rem</option>
+                    </optgroup>
+                    <optgroup label="Sistem Transmisi">
+                        <option value="Ganti Oli Transmisi">Ganti Oli Transmisi</option>
+                        <option value="Ganti Kampas Kopling">Ganti Kampas Kopling</option>
+                        <option value="Perbaikan Transmisi">Perbaikan Transmisi</option>
+                    </optgroup>
+                    <optgroup label="Sistem Suspensi">
+                        <option value="Ganti Shock Absorber">Ganti Shock Absorber</option>
+                        <option value="Perbaikan Suspensi">Perbaikan Suspensi</option>
+                    </optgroup>
+                    <optgroup label="Kelistrikan">
+                        <option value="Perbaikan Sistem Pengapian">Perbaikan Sistem Pengapian</option>
+                        <option value="Ganti Aki">Ganti Aki</option>
+                        <option value="Perbaikan Lampu">Perbaikan Lampu</option>
+                    </optgroup>
+                    <option value="Lainnya">Lainnya</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="date">Tanggal</label>
-                <input type="date" id="date" name="date" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="notes">Catatan Tambahan</label>
-                <textarea id="notes" name="notes" class="form-control" placeholder="Tambahkan catatan..."></textarea>
+                <input type="date" id="date" name="date" class="form-control" required>
             </div>
 
             <button type="submit" class="submit-button">
@@ -116,138 +273,5 @@
         </form>
     </div>
 </div>
-
-<style>
-    /* Base Styles */
-    .service-container {
-        padding: 20px;
-        width: 100%;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background-color: #f5f5f5;
-    }
-    
-    .service-card {
-        background: #fff;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 800px;
-        margin: 20px 0;
-    }
-    
-    .service-header {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-    
-    .service-header h2 {
-        margin: 0;
-        color: #333;
-        font-size: 24px;
-    }
-    
-    .service-form {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #333;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-    }
-    
-    .form-control:focus {
-        border-color:rgb(28, 124, 214);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(214, 28, 31, 0.1);
-    }
-    
-    textarea.form-control {
-        min-height: 120px;
-        resize: vertical;
-    }
-    
-    .submit-button {
-        background-color: #007BFF; /* merah */
-        color: white;
-        border: none;
-        padding: 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        width: 100%;
-        transition: background-color 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .submit-button:hover {
-        background-color: #007BFF; /* merah muda saat hover */
-    }
-
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .service-container {
-            padding: 15px;
-            align-items: center;
-        }
-        
-        .service-card {
-            padding: 20px;
-            margin: 10px 0;
-        }
-        
-        .service-header h2 {
-            font-size: 20px;
-        }
-        
-        .form-control {
-            padding: 10px 12px;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .service-card {
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .service-header {
-            margin-bottom: 15px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .submit-button {
-            padding: 12px;
-            font-size: 15px;
-        }
-    }
-</style>
 
 <?= $this->endSection(); ?>

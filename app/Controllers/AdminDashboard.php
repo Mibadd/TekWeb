@@ -3,23 +3,26 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\LaporanModel;
 use CodeIgniter\Controller;
 
 class AdminDashboard extends Controller
 {
     public function index()
     {
-        $userModel = new UserModel();
-        $totalUsers = $userModel->countAll(); 
-        $totalServices = 1240; 
-        $pendingRequests = 34; 
-        $income = 8750000;
+        $laporanModel = new LaporanModel();
+
+        $totalServices = $laporanModel->countAllResults(); // total servis
+        $pendingRequests = $laporanModel->where('tanggal', date('Y-m-d'))->countAllResults(); // antrean hari ini
+        $income = $laporanModel->getTotalPendapatan(); // total pendapatan, buat method ini di model
+        
+        $chartData = $laporanModel->getServisPerBulan();
 
         $data = [
-            'totalUsers' => $totalUsers,
             'totalServices' => $totalServices,
             'pendingRequests' => $pendingRequests,
             'income' => $income,
+            'chartData' => $chartData,
         ];
 
         return view('admin/dashboard', $data);

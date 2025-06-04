@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ServiceScheduleModel extends Model
 {
-    protected $table = 'service_schedules'; // Nama tabel di DB
+    protected $table = 'service_schedules';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
@@ -14,12 +14,20 @@ class ServiceScheduleModel extends Model
         'date',
         'service_type',
         'status',
-        'permintaan_service_id', // Kalau ada
+        'permintaan_service_id',
         'created_at',
         'updated_at',
     ];
 
-    protected $useTimestamps = true; // Jika kamu ingin auto timestamp
+    protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+
+    public function getLatestSchedulesByUser($userId, $limit = 5)
+    {
+        return $this->where('user_id', $userId)
+                    ->orderBy('date', 'DESC')
+                    ->limit($limit)
+                    ->findAll();
+    }
 }

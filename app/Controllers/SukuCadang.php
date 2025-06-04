@@ -13,54 +13,55 @@ class SukuCadang extends BaseController
         $this->sukuCadangModel = new SukuCadangModel();
     }
 
-    public function index()
-    {
-        $filter_kategori = $this->request->getGet('filter_kategori');
-        $filter_nama = $this->request->getGet('filter_nama');
+public function index()
+{
+    $kategori = $this->request->getPost('kategori');
+    $status   = $this->request->getPost('status');
+    $nama     = $this->request->getPost('nama');
 
-        $builder = $this->sukuCadangModel;
+    $builder = $this->sukuCadangModel;
 
-        if (!empty($filter_kategori)) {
-            $builder = $builder->where('kategori', $filter_kategori);
-        }
-
-        if (!empty($filter_nama)) {
-            $builder = $builder->like('nama', $filter_nama);
-        }
-
-        $data['sukucadang'] = $builder->findAll();
-        $data['filter_kategori'] = $filter_kategori;
-        $data['filter_nama'] = $filter_nama;
-
-        return view('admin/sukucadang/index', $data);
+    if ($kategori !== null && $kategori !== '') {
+        $builder = $builder->where('kategori', $kategori);
     }
+
+    if ($status !== null && $status !== '') {
+        $builder = $builder->where('status', $status);
+    }
+
+    if ($nama !== null && $nama !== '') {
+        $builder = $builder->like('nama', $nama);
+    }
+
+    $data = [
+        'sukucadang' => $builder->findAll(),
+        'kategori'   => $kategori,
+        'status'     => $status,
+        'nama'       => $nama,
+    ];
+
+    return view('admin/sukucadang', $data);
+}
+
+
+
+
 
     public function tambah()
     {
-        // Validasi input
-        if (!$this->validate([
-            'kode' => 'required|max_length[10]',
-            'nama_sukucadang' => 'required|max_length[100]',
-            'kategori' => 'required|max_length[50]',
-            'stok' => 'required|integer',
-            'harga' => 'required|decimal',
-        ])) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
         $kode = $this->request->getPost('kode');
         $nama = $this->request->getPost('nama_sukucadang');
         $kategori = $this->request->getPost('kategori');
         $stok = (int) $this->request->getPost('stok');
-        $harga = $this->request->getPost('harga');
+        $harga = (int) $this->request->getPost('harga');
 
-        // Status enum sesuai database, huruf kecil semua
+        // Set status otomatis berdasarkan stok
         if ($stok > 5) {
-            $status = 'tersedia';
+            $status = 'Tersedia';
         } elseif ($stok > 0) {
-            $status = 'menipis';
+            $status = 'Stok Menipis';
         } else {
-            $status = 'habis';
+            $status = 'Habis';
         }
 
         $data = [
@@ -77,6 +78,7 @@ class SukuCadang extends BaseController
         return redirect()->to(base_url('admin/sukucadang'))->with('success', 'Suku Cadang berhasil ditambahkan.');
     }
 
+    // Fungsi untuk mengambil data untuk form edit
     public function getById($id)
     {
         $data = $this->sukuCadangModel->find($id);
@@ -87,42 +89,32 @@ class SukuCadang extends BaseController
         }
     }
 
+    // Fungsi untuk menyimpan hasil edit
     public function edit()
     {
-        // Validasi input
-        if (!$this->validate([
-            'id' => 'required|integer',
-            'kode' => 'required|max_length[10]',
-            'nama_sukucadang' => 'required|max_length[100]',
-            'kategori' => 'required|max_length[50]',
-            'stok' => 'required|integer',
-            'harga' => 'required|decimal',
-        ])) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
         $id = $this->request->getPost('id');
         $stok = (int) $this->request->getPost('stok');
-
+        
+        // Set status otomatis berdasarkan stok
         if ($stok > 5) {
-            $status = 'tersedia';
+            $status = 'Tersedia';
         } elseif ($stok > 0) {
-            $status = 'menipis';
+            $status = 'Stok Menipis';
         } else {
-            $status = 'habis';
+            $status = 'Habis';
         }
-
+        
         $data = [
             'kode'     => $this->request->getPost('kode'),
             'nama'     => $this->request->getPost('nama_sukucadang'),
             'kategori' => $this->request->getPost('kategori'),
             'stok'     => $stok,
-            'harga'    => $this->request->getPost('harga'),
+            'harga'    => (int) $this->request->getPost('harga'),
             'status'   => $status,
         ];
 
         $success = $this->sukuCadangModel->update($id, $data);
-
+        
         if ($success) {
             return redirect()->to(base_url('admin/sukucadang'))->with('success', 'Suku Cadang berhasil diperbarui.');
         } else {

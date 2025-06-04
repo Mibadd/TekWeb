@@ -39,6 +39,7 @@ $routes->get('jadwalservice/edit/(:num)', 'ServiceScheduleController::edit/$1');
 $routes->post('jadwalservice/update/(:num)', 'ServiceScheduleController::update/$1');   // Proses update jadwal
 $routes->get('service-schedule/(:num)', 'ServiceScheduleController::show/$1');
 
+
 $routes->get('jadwalservice/delete/(:num)', 'ServiceScheduleController::delete/$1');    // Hapus jadwal
 $routes->get('service-schedule/(:num)', 'ServiceScheduleController::show/$1');
 
@@ -70,19 +71,17 @@ $routes->get('/admin/manajemenjadwal', 'ManajemenJadwal::index');
 $routes->get('admin/manajemenjadwal', 'Admin\ManajemenJadwal::index');
 
 // ==== ADMIN - SUKU CADANG ====
-$routes->get('/admin/sukucadang', 'AdminDashboard::sukucadang');
 $routes->get('/admin/sukucadang', 'SukuCadang::index');
 $routes->post('/admin/sukucadang/tambah', 'SukuCadang::tambah');
-$routes->get('/admin/sukucadang/getById/(:num)', 'SukuCadang::getById/$1'); // Rute baru untuk mendapatkan data
+$routes->get('/admin/sukucadang/getById/(:num)', 'SukuCadang::getById/$1'); 
 $routes->post('/admin/sukucadang/edit', 'SukuCadang::edit');
 $routes->get('/admin/sukucadang/hapus/(:num)', 'SukuCadang::hapus/$1');
 
 // ==== ADMIN - STATISTIK, LAPORAN, LOG ====
-$routes->get('/admin/statistik', 'AdminDashboard::statistik');
 $routes->get('/admin/laporan', 'AdminDashboard::laporan');
-$routes->get('/admin/logaktivitas', 'AdminDashboard::logaktivitas');
 
 // ==== LAPORAN ====
+$routes->get('/admin/laporan', 'LaporanController::index');
 $routes->get('laporan', 'LaporanController::index');
 $routes->get('laporan/filter', 'LaporanController::filter');
 $routes->get('laporan/export-pdf', 'LaporanController::exportPdf');
@@ -92,3 +91,4 @@ $routes->get('laporan/export-excel', 'LaporanController::exportExcel');
 $routes->get('/payment', 'PaymentController::index');
 $routes->post('/payment/process', 'PaymentController::process');
 $routes->get('/payment/history', 'PaymentController::history');
+

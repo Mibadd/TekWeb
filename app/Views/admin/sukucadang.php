@@ -11,12 +11,14 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
         body {
             display: flex;
             background-color: #f5f5f5;
             height: 100vh;
         }
-        /* Sidebar Styles */
+        
+        /* Sidebar Styles - Konsisten dengan dashboard */
         .sidebar {
             width: 215px;
             height: 100vh;
@@ -25,21 +27,25 @@
             display: flex;
             flex-direction: column;
         }
+
         .logo {
             padding: 20px 0;
             border-bottom: 1px solid #e0e0e0;
             text-align: center;
         }
+
         .logo h1 {
             color: #e74c3c;
             font-size: 20px;
             font-weight: 600;
         }
+
         .menu {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
+
         .menu-item {
             padding: 15px 20px;
             cursor: pointer;
@@ -49,10 +55,12 @@
             text-decoration: none;
             display: block;
         }
+
         .menu-item:hover,
         .menu-item.active {
             background-color: #f8f9fa;
         }
+        
         .logout {
             border-top: 1px solid #e0e0e0;
             padding: 15px 20px;
@@ -199,8 +207,6 @@
             border-radius: 4px;
             font-size: 14px;
             user-select: none;
-            margin-right: 5px;
-            display: inline-block;
         }
         .page-item.active {
             background-color: #2563eb;
@@ -208,7 +214,7 @@
             border-color: #2563eb;
         }
         /* Modal Styles */
-        #modalTambah, #modalEdit {
+        #modalTambah {
             display: none;
             position: fixed;
             top: 0; left: 0;
@@ -218,7 +224,72 @@
             align-items: center;
             z-index: 1000;
         }
-        #modalTambah .modal-content, #modalEdit .modal-content {
+        #modalTambah .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        #modalTambah h3 {
+            margin-bottom: 16px;
+        }
+        #modalTambah label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+            font-size: 14px;
+            color: #333;
+        }
+        #modalTambah input[type="text"],
+        #modalTambah input[type="number"],
+        #modalTambah select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        #modalTambah .btn-group {
+            text-align: right;
+        }
+        #modalTambah button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+        #modalTambah #btnCloseModal {
+            background: #ccc;
+            margin-right: 10px;
+            color: #333;
+        }
+        #modalTambah #btnCloseModal:hover {
+            background: #b3b3b3;
+        }
+        #modalTambah button[type="submit"] {
+            background: #e74c3c;
+            color: white;
+        }
+        #modalTambah button[type="submit"]:hover {
+            background: #c0392b;
+        }
+
+        #modalEdit {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        }
+
+        #modalEdit .modal-content {
             background: white;
             padding: 20px;
             border-radius: 8px;
@@ -229,19 +300,19 @@
             flex-direction: column;
             gap: 10px;
         }
-        #modalTambah h3, #modalEdit h3 {
+
+        #modalEdit h3 {
             margin-bottom: 16px;
         }
-        #modalTambah label, #modalEdit label {
+
+        #modalEdit label {
             font-weight: 600;
             margin-bottom: 4px;
             display: block;
             font-size: 14px;
             color: #333;
         }
-        #modalTambah input[type="text"],
-        #modalTambah input[type="number"],
-        #modalTambah select,
+
         #modalEdit input[type="text"],
         #modalEdit input[type="number"],
         #modalEdit select {
@@ -252,32 +323,39 @@
             font-size: 14px;
             margin-bottom: 12px;
         }
-        #modalTambah .btn-group, #modalEdit .btn-group {
+
+        #modalEdit .btn-group {
             text-align: right;
         }
-        #modalTambah button, #modalEdit button {
+
+        #modalEdit button {
             padding: 8px 15px;
             border-radius: 4px;
             font-size: 14px;
             cursor: pointer;
             border: none;
         }
-        #modalTambah #btnCloseModal, #modalEdit #btnCloseEditModal {
+
+        #modalEdit #btnCloseEditModal {
             background: #ccc;
             margin-right: 10px;
             color: #333;
         }
-        #modalTambah #btnCloseModal:hover, #modalEdit #btnCloseEditModal:hover {
+
+        #modalEdit #btnCloseEditModal:hover {
             background: #b3b3b3;
         }
-        #modalTambah button[type="submit"], #modalEdit button[type="submit"] {
+
+        #modalEdit button[type="submit"] {
             background: #e74c3c;
             color: white;
         }
-        #modalTambah button[type="submit"]:hover, #modalEdit button[type="submit"]:hover {
+
+        #modalEdit button[type="submit"]:hover {
             background: #c0392b;
         }
     </style>
+
 </head>
 <body>
     <!-- Sidebar -->
@@ -286,15 +364,14 @@
             <h1>Admin GOODBIKE</h1>
         </div>
         <div class="menu">
-            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
-            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item">Dashboard</a>
+            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item ">Manajemen Pengguna</a>
             <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
-            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
-            <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
+            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item active">Suku Cadang</a>
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+            <a href="<?= base_url('auth/logout'); ?>" class="menu-item">Logout</a>
         </div>
     </div>
 
@@ -302,293 +379,246 @@
     <div class="content">
         <div class="content-header">
             <h2>Data Suku Cadang</h2>
-            <button id="btnOpenModalTambah" class="add-button">Tambah Suku Cadang</button>
+            <button class="add-button" id="btnOpenModal">Tambah Suku Cadang</button>
         </div>
+
         <div class="sukucadang-container">
-            <div class="filter-container">
+            <!-- Filter -->
+            <form method="GET" action="<?= base_url('admin/sukucadang') ?>" class="filter-container">
                 <div class="filter-group">
-                    <label for="filterNama">Nama:</label>
-                    <input type="text" id="filterNama" placeholder="Cari nama suku cadang" />
-                </div>
-                <div class="filter-group">
-                    <label for="filterStatus">Status:</label>
-                    <select id="filterStatus">
+                    <label for="filterKategori">Filter Kategori:</label>
+                    <select id="filterKategori" name="filter_kategori">
                         <option value="">Semua</option>
-                        <option value="Tersedia">Tersedia</option>
-                        <option value="Menipis">Menipis</option>
-                        <option value="Habis">Habis</option>
+                        <option value="Rantai" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Rantai') ? 'selected' : '' ?>>Rantai</option>
+                        <option value="Gear" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Gear') ? 'selected' : '' ?>>Gear</option>
+                        <option value="Rem" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Rem') ? 'selected' : '' ?>>Rem</option>
+                        <option value="Ban" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Ban') ? 'selected' : '' ?>>Ban</option>
                     </select>
                 </div>
-                <button id="btnFilter" class="filter-button">Filter</button>
-            </div>
+                <div class="filter-group">
+                    <label for="status">Status:</label>
+                    <select id="status" class="form-select">
+                        <option value="">Semua Status</option>
+                        <option value="tersedia">Tersedia</option>
+                        <option value="menipis">Stok Menipis</option>
+                        <option value="habis">Habis</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterNama">Cari Nama:</label>
+                    <input type="text" id="filterNama" name="filter_nama" value="<?= isset($_GET['filter_nama']) ? htmlspecialchars($_GET['filter_nama']) : '' ?>" placeholder="Cari berdasarkan nama suku cadang" />
+                </div>
+                <button type="submit" class="filter-button">Cari</button>
+            </form>
+
+            <!-- Table Data -->
             <table class="sukucadang-table">
-                <thead>
-                    <tr>
-                        <th>Nama Suku Cadang</th>
-                        <th>Stok</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="sukuCadangTableBody">
-                    <!-- Data rows akan muncul di sini -->
-                </tbody>
-            </table>
-            <div id="pagination" style="margin-top: 15px;"></div>
+    <thead>
+        <tr>
+            <th>Kode</th>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Stok</th>
+            <th>Harga</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($sukucadang)): ?>
+            <?php foreach ($sukucadang as $item): ?>
+                <tr>
+                    <td><?= htmlspecialchars($item['id']) ?></td>  <!-- Kode -->
+                    <td><?= htmlspecialchars($item['nama']) ?></td>  <!-- Nama -->
+                    <td><?= htmlspecialchars($item['kategori']) ?></td>  <!-- Kategori -->
+                    <td><?= (int)$item['stok'] ?></td>  <!-- Stok -->
+                    <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>  <!-- Harga -->
+                    <td>
+                        <?php
+                            $stok = (int)$item['stok'];
+                            if ($stok == 0) {
+                                echo '<span class="status-habis">Habis</span>';
+                            } elseif ($stok <= 5) {
+                                echo '<span class="status-menipis">Menipis</span>';
+                            } else {
+                                echo '<span class="status-tersedia">Tersedia</span>';
+                            }
+                        ?>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="action-edit" type="button" onclick="editSukuCadang(<?= $item['id'] ?>)">Edit</button>
+                        <button class="action-delete" type="button" onclick="deleteSukuCadang(<?= $item['id'] ?>)">Hapus</button>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        <?php else: ?>
+            <tr><td colspan="7" style="text-align:center; padding:20px;">Data tidak ditemukan.</td></tr>
+        <?php endif ?>
+    </tbody>
+</table>
         </div>
     </div>
 
-    <!-- Modal Tambah -->
+    <!-- Modal Tambah Suku Cadang -->
     <div id="modalTambah">
         <div class="modal-content">
             <h3>Tambah Suku Cadang</h3>
-            <form id="formTambah">
-                <label for="tambahNama">Nama Suku Cadang:</label>
-                <input type="text" id="tambahNama" required />
+<form action="<?= base_url('admin/sukucadang/tambah') ?>" method="POST">
+    <label for="kode">Kode:</label>
+    <input type="text" id="kode" name="kode" required />
 
-                <label for="tambahStok">Stok:</label>
-                <input type="number" id="tambahStok" min="0" required />
+    <label for="namaSukuCadang">Nama Suku Cadang:</label>
+    <input type="text" id="namaSukuCadang" name="nama_sukucadang" required />
 
-                <label for="tambahStatus">Status:</label>
-                <select id="tambahStatus" required>
-                    <option value="">Pilih Status</option>
-                    <option value="Tersedia">Tersedia</option>
-                    <option value="Menipis">Menipis</option>
-                    <option value="Habis">Habis</option>
-                </select>
+    <label for="kategoriModal">Kategori:</label>
+    <select id="kategoriModal" name="kategori" required>
+        <option value="">Pilih kategori</option>
+        <option value="Rantai">Rantai</option>
+        <option value="Gear">Gear</option>
+        <option value="Rem">Rem</option>
+        <option value="Ban">Ban</option>
+    </select>
 
-                <div class="btn-group">
-                    <button type="button" id="btnCloseModal">Batal</button>
-                    <button type="submit">Tambah</button>
-                </div>
-            </form>
+    <label for="stok">Stok:</label>
+    <input type="number" id="stok" name="stok" min="0" required />
+
+    <label for="harga">Harga (Rp):</label>
+    <input type="number" id="harga" name="harga" min="0" required />
+
+    <div class="btn-group">
+        <button type="button" id="btnCloseModal">Batal</button>
+        <button type="submit">Simpan</button>
+    </div>
+</form>
+
+
         </div>
     </div>
 
-    <!-- Modal Edit -->
-    <div id="modalEdit">
-        <div class="modal-content">
-            <h3>Edit Suku Cadang</h3>
-            <form id="formEdit">
-                <input type="hidden" id="editIndex" />
-                <label for="editNama">Nama Suku Cadang:</label>
-                <input type="text" id="editNama" required />
+    <!-- Modal Edit Suku Cadang -->
+<div id="modalEdit" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+     background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+    <div class="modal-content">
+        <h3>Edit Suku Cadang</h3>
+        <form id="formEdit" action="<?= base_url('admin/sukucadang/edit') ?>" method="POST">
+            <input type="hidden" id="editId" name="id">
+            
+            <label for="editKode">Kode:</label>
+            <input type="text" id="editKode" name="kode" required />
 
-                <label for="editStok">Stok:</label>
-                <input type="number" id="editStok" min="0" required />
+            <label for="editNamaSukuCadang">Nama Suku Cadang:</label>
+            <input type="text" id="editNamaSukuCadang" name="nama_sukucadang" required />
 
-                <label for="editStatus">Status:</label>
-                <select id="editStatus" required>
-                    <option value="">Pilih Status</option>
-                    <option value="Tersedia">Tersedia</option>
-                    <option value="Menipis">Menipis</option>
-                    <option value="Habis">Habis</option>
-                </select>
+            <label for="editKategoriModal">Kategori:</label>
+            <select id="editKategoriModal" name="kategori" required>
+                <option value="">Pilih kategori</option>
+                <option value="Rantai">Rantai</option>
+                <option value="Gear">Gear</option>
+                <option value="Rem">Rem</option>
+                <option value="Ban">Ban</option>
+            </select>
 
-                <div class="btn-group">
-                    <button type="button" id="btnCloseEditModal">Batal</button>
-                    <button type="submit">Simpan</button>
-                </div>
-            </form>
-        </div>
+            <label for="editStok">Stok:</label>
+            <input type="number" id="editStok" name="stok" min="0" required />
+
+            <label for="editHarga">Harga (Rp):</label>
+            <input type="number" id="editHarga" name="harga" min="0" required />
+
+            <div class="btn-group">
+                <button type="button" id="btnCloseEditModal">Batal</button>
+                <button type="submit">Simpan</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script>
-        // Data dummy suku cadang
-        let sukuCadangData = [
-            { nama: "Ban Sepeda", stok: 15, status: "Tersedia" },
-            { nama: "Rem Depan", stok: 5, status: "Menipis" },
-            { nama: "Lampu Belakang", stok: 0, status: "Habis" },
-            { nama: "Gear", stok: 10, status: "Tersedia" },
-            { nama: "Handlebar", stok: 3, status: "Menipis" },
-            { nama: "Pedal", stok: 0, status: "Habis" },
-            { nama: "Sadel", stok: 20, status: "Tersedia" },
-            { nama: "Rantai", stok: 2, status: "Menipis" },
-            { nama: "Ban Dalam", stok: 0, status: "Habis" },
-            { nama: "Shockbreaker", stok: 8, status: "Tersedia" },
-            { nama: "Velg", stok: 4, status: "Menipis" },
-            { nama: "Kunci Stir", stok: 0, status: "Habis" },
-            { nama: "Lampu Depan", stok: 10, status: "Tersedia" },
-            { nama: "Kabel Rem", stok: 1, status: "Menipis" },
-            { nama: "Spakbor", stok: 0, status: "Habis" },
-        ];
+<!-- Tambahkan notifikasi untuk menampilkan pesan -->
+<?php if (session()->getFlashdata('success')) : ?>
+<div id="notification" style="position:fixed; top:20px; right:20px; background:#4CAF50; color:white; 
+     padding:15px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.1); z-index:9999;">
+    <?= session()->getFlashdata('success') ?>
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('notification').style.display = 'none';
+    }, 3000);
+</script>
+<?php endif; ?>
 
-        let currentPage = 1;
-        const itemsPerPage = 5;
+<?php if (session()->getFlashdata('error')) : ?>
+<div id="notification" style="position:fixed; top:20px; right:20px; background:#F44336; color:white; 
+     padding:15px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.1); z-index:9999;">
+    <?= session()->getFlashdata('error') ?>
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('notification').style.display = 'none';
+    }, 3000);
+</script>
+<?php endif; ?>
 
-        // Elemen DOM
-        const sukuCadangTableBody = document.getElementById("sukuCadangTableBody");
-        const filterNama = document.getElementById("filterNama");
-        const filterStatus = document.getElementById("filterStatus");
-        const btnFilter = document.getElementById("btnFilter");
-        const pagination = document.getElementById("pagination");
+<script>
+    const modalTambah = document.getElementById('modalTambah');
+    const modalEdit = document.getElementById('modalEdit');
+    const btnOpenModal = document.getElementById('btnOpenModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCloseEditModal = document.getElementById('btnCloseEditModal');
 
-        const modalTambah = document.getElementById("modalTambah");
-        const btnOpenModalTambah = document.getElementById("btnOpenModalTambah");
-        const btnCloseModal = document.getElementById("btnCloseModal");
-        const formTambah = document.getElementById("formTambah");
+    btnOpenModal.addEventListener('click', () => {
+        modalTambah.style.display = 'flex';
+    });
 
-        const modalEdit = document.getElementById("modalEdit");
-        const btnCloseEditModal = document.getElementById("btnCloseEditModal");
-        const formEdit = document.getElementById("formEdit");
-        const editIndexInput = document.getElementById("editIndex");
-        const editNama = document.getElementById("editNama");
-        const editStok = document.getElementById("editStok");
-        const editStatus = document.getElementById("editStatus");
+    btnCloseModal.addEventListener('click', () => {
+        modalTambah.style.display = 'none';
+    });
+    
+    btnCloseEditModal.addEventListener('click', () => {
+        modalEdit.style.display = 'none';
+    });
 
-        // Fungsi tampilkan data ke tabel dengan paging dan filter
-        function tampilkanData(page = 1) {
-            const namaFilter = filterNama.value.toLowerCase().trim();
-            const statusFilter = filterStatus.value;
-
-            // Filter data
-            let filteredData = sukuCadangData.filter(item => {
-                const matchNama = item.nama.toLowerCase().includes(namaFilter);
-                const matchStatus = statusFilter === "" || item.status === statusFilter;
-                return matchNama && matchStatus;
-            });
-
-            // Pagination
-            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-            if (page > totalPages) page = totalPages > 0 ? totalPages : 1;
-            currentPage = page;
-
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const pageData = filteredData.slice(start, end);
-
-            // Tampilkan baris tabel
-            sukuCadangTableBody.innerHTML = "";
-            if(pageData.length === 0) {
-                sukuCadangTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px;">Data tidak ditemukan</td></tr>`;
-            } else {
-                pageData.forEach((item, index) => {
-                    const globalIndex = start + index;
-                    sukuCadangTableBody.innerHTML += `
-                        <tr>
-                            <td>${item.nama}</td>
-                            <td>${item.stok}</td>
-                            <td class="status-${item.status.toLowerCase()}">${item.status}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-edit" data-index="${globalIndex}">Edit</button>
-                                    <button class="action-delete" data-index="${globalIndex}">Hapus</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-
-            // Tampilkan pagination
-            renderPagination(totalPages);
+    window.addEventListener('click', (e) => {
+        if (e.target === modalTambah) {
+            modalTambah.style.display = 'none';
         }
-
-        function renderPagination(totalPages) {
-            pagination.innerHTML = "";
-            for(let i=1; i<=totalPages; i++) {
-                const pageBtn = document.createElement("span");
-                pageBtn.className = "page-item" + (i === currentPage ? " active" : "");
-                pageBtn.textContent = i;
-                pageBtn.addEventListener("click", () => {
-                    tampilkanData(i);
-                });
-                pagination.appendChild(pageBtn);
-            }
+        if (e.target === modalEdit) {
+            modalEdit.style.display = 'none';
         }
+    });
 
-        // Event untuk tombol Filter
-        btnFilter.addEventListener("click", () => {
-            tampilkanData(1);
-        });
-
-        // Event untuk tombol Tambah Suku Cadang buka modal
-        btnOpenModalTambah.addEventListener("click", () => {
-            formTambah.reset();
-            modalTambah.style.display = "flex";
-        });
-
-        // Tutup modal Tambah
-        btnCloseModal.addEventListener("click", () => {
-            modalTambah.style.display = "none";
-        });
-
-        // Tambah data baru
-        formTambah.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const nama = document.getElementById("tambahNama").value.trim();
-            const stok = Number(document.getElementById("tambahStok").value);
-            const status = document.getElementById("tambahStatus").value;
-
-            if(nama === "" || status === "" || isNaN(stok) || stok < 0) {
-                alert("Mohon isi data dengan benar!");
-                return;
-            }
-
-            sukuCadangData.push({ nama, stok, status });
-            modalTambah.style.display = "none";
-            tampilkanData(currentPage);
-        });
-
-        // Event klik di tabel untuk edit dan hapus (event delegation)
-        sukuCadangTableBody.addEventListener("click", (e) => {
-            if(e.target.classList.contains("action-edit")) {
-                const index = e.target.dataset.index;
-                bukaModalEdit(index);
-            } else if(e.target.classList.contains("action-delete")) {
-                const index = e.target.dataset.index;
-                if(confirm("Yakin ingin menghapus data ini?")) {
-                    sukuCadangData.splice(index, 1);
-                    tampilkanData(currentPage);
+    function editSukuCadang(id) {
+        // Tampilkan modal edit
+        modalEdit.style.display = 'flex';
+        
+        // Ambil data dengan AJAX
+        fetch(`<?= base_url('admin/sukucadang/getById') ?>/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
                 }
-            }
-        });
+                
+                // Isi form dengan data yang diambil
+                document.getElementById('editId').value = data.id;
+                document.getElementById('editKode').value = data.kode;
+                document.getElementById('editNamaSukuCadang').value = data.nama;
+                document.getElementById('editKategoriModal').value = data.kategori;
+                document.getElementById('editStok').value = data.stok;
+                document.getElementById('editHarga').value = data.harga;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengambil data.');
+            });
+    }
 
-        // Buka modal edit dengan data yang dipilih
-        function bukaModalEdit(index) {
-            const data = sukuCadangData[index];
-            editIndexInput.value = index;
-            editNama.value = data.nama;
-            editStok.value = data.stok;
-            editStatus.value = data.status;
-            modalEdit.style.display = "flex";
+    function deleteSukuCadang(id) {
+        if (confirm('Yakin ingin menghapus suku cadang ini?')) {
+            // Redirect ke route hapus
+            window.location.href = `<?= base_url('admin/sukucadang/hapus') ?>/${id}`;
         }
-
-        // Tutup modal edit
-        btnCloseEditModal.addEventListener("click", () => {
-            modalEdit.style.display = "none";
-        });
-
-        // Simpan perubahan edit
-        formEdit.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const index = editIndexInput.value;
-            const nama = editNama.value.trim();
-            const stok = Number(editStok.value);
-            const status = editStatus.value;
-
-            if(nama === "" || status === "" || isNaN(stok) || stok < 0) {
-                alert("Mohon isi data dengan benar!");
-                return;
-            }
-
-            sukuCadangData[index] = { nama, stok, status };
-            modalEdit.style.display = "none";
-            tampilkanData(currentPage);
-        });
-
-        // Tutup modal jika klik di luar konten modal
-        window.addEventListener("click", (e) => {
-            if(e.target === modalTambah) {
-                modalTambah.style.display = "none";
-            }
-            if(e.target === modalEdit) {
-                modalEdit.style.display = "none";
-            }
-        });
-
-        // Tampilkan data awal
-        tampilkanData();
-    </script>
+    }
+</script>
+    
 </body>
 </html>

@@ -38,17 +38,22 @@
     </div>
     
     <div class="schedule-section">
-        <div class="section-title">
-            <span>Jadwal Service</span>
-            <a href="#" class="section-link">Lihat Jadwal</a>
-        </div>
-        <ul style="list-style-type: none;">
-            <li><span class="check-icon">✓</span> 20/03/2024</li>
-            <li><span class="check-icon">✓</span> 20/06/2024</li>
-            <li><span class="check-icon">✓</span> 22/09/2024</li>
-            <li><span class="cross-icon">✕</span> 22/12/2024</li>
-        </ul>
+    <div class="section-title">
+        <span>Jadwal Service</span>
+        <a href="#" class="section-link">Lihat Jadwal</a>
     </div>
+    <ul style="list-style-type: none;">
+        <?php if (!empty($latestSchedules)): ?>
+            <?php foreach ($latestSchedules as $schedule): ?>
+                <li>
+                    <span class="check-icon">✓</span>
+                    <?= esc(date('d/m/Y', strtotime($schedule['date']))) ?> - <?= esc($schedule['service_type']) ?>
+                </li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>Tidak ada jadwal service.</li>
+        <?php endif; ?>
+    </ul>
 </div>
 
 <?= $this->endSection(); ?>

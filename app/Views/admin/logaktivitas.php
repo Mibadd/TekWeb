@@ -218,9 +218,7 @@
             <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
             <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
             <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
-            <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
-            <a href="<?= base_url('admin/logaktivitas') ?>" class="menu-item active">Log Aktivitas</a>
         </div>
         <div class="logout">
         <a href="<?= base_url('auth/logout'); ?>">Logout</a>

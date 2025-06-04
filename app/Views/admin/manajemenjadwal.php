@@ -182,11 +182,10 @@
             <h1>Admin GOODBIKE</h1>
         </div>
         <div class="menu">
-            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item ">Dashboard</a>
             <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
+            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item active">Manajemen Jadwal</a>
             <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
-            <a href="<?= base_url('admin/statistik') ?>" class="menu-item">Statistik</a>
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
