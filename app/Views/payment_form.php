@@ -134,19 +134,14 @@
         <div class="mb-3">
             <label>Pilih Metode Pembayaran</label>
             <div>
-                <label><input type="radio" name="payment_method" value="Transfer Bank" required> Transfer Bank (BCA, BRI, Mandiri)</label><br>
-                <label><input type="radio" name="payment_method" value="E-Wallet"> E-Wallet (OVO, Dana, GoPay)</label><br>
+                <label><input type="radio" name="payment_method" value="Transfer Bank" required> Transfer Bank (Mandiri)</label><br>
+                <label><input type="radio" name="payment_method" value="E-Wallet"> OVO</label><br>
+                <label><input type="radio" name="payment_method" value="E-Wallet"> GoPay</label><br>
+                <label><input type="radio" name="payment_method" value="E-Wallet"> Dana</label><br>
                 <label><input type="radio" name="payment_method" value="Bayar di Tempat"> Bayar di Tempat (Tunai)</label>
             </div>
         </div>
-
-        <div class="mb-3">
-            <label>Upload Bukti Pembayaran</label>
-            <input type="file" name="payment_proof" class="form-control mt-2">
-        </div>
-
-        <button type="submit" class="btn btn-success">Konfirmasi Pembayaran</button>
-        <a href="<?= base_url('payment/history'); ?>" class="payment-history-link">Riwayat Pembayaran</a>
+        <button type="submit" class="btn btn-success">Bayar</button>
     </form>
 </div>
 

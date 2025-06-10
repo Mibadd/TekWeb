@@ -29,16 +29,20 @@ $routes->get('admin/dashboard', 'AdminDashboard::index');
 // ==== PERMINTAAN SERVICE ====
 $routes->get('/permintaanservice', 'PermintaanService::index');
 $routes->post('/permintaanservice/store', 'PermintaanService::store');
-$routes->post('permintaanservice/create', 'PermintaanService::create');
+$routes->get('/permintaanservice/detail/(:num)', 'PermintaanService::detail/$1');
+$routes->get('/detailservice', 'Service::detailservice');
+$routes->get('service/payment-form/(:num)', 'Service::paymentForm/$1');
 
 // ==== SERVICE SCHEDULE / JADWAL SERVICE ====
-$routes->get('jadwalservice', 'ServiceScheduleController::index');                      // Melihat daftar jadwal service
-$routes->get('jadwalservice/create', 'ServiceScheduleController::create');              // Form tambah jadwal service
-$routes->post('jadwalservice/store', 'ServiceScheduleController::store');               // Proses simpan jadwal baru
-$routes->get('jadwalservice/edit/(:num)', 'ServiceScheduleController::edit/$1');        // Form edit jadwal
-$routes->post('jadwalservice/update/(:num)', 'ServiceScheduleController::update/$1');   // Proses update jadwal
-$routes->get('service-schedule/(:num)', 'ServiceScheduleController::show/$1');
-
+$routes->get('/manajemenjadwal', 'ManajemenJadwal::index');
+$routes->post('/manajemenjadwal/update', 'ManajemenJadwal::update');
+$routes->get('admin/editjadwal/(:num)', 'ManajemenJadwal::edit/$1');
+$routes->post('admin/manajemenjadwal/update/(:num)', 'ManajemenJadwal::updateDetail/$1');
+$routes->get('admin/tambahjadwal', 'ManajemenJadwal::formTambah');
+$routes->post('manajemenjadwal/tambah', 'ManajemenJadwal::tambah');
+$routes->post('admin/manajemenjadwal/delete/(:num)', 'ManajemenJadwal::delete/$1');
+$routes->post('admin/hapusjadwal/(:num)', 'ManajemenJadwal::delete/$1');
+$routes->get('/service-schedule', 'ServiceScheduleController::index');
 
 $routes->get('jadwalservice/delete/(:num)', 'ServiceScheduleController::delete/$1');    // Hapus jadwal
 $routes->get('service-schedule/(:num)', 'ServiceScheduleController::show/$1');
@@ -48,9 +52,16 @@ $routes->get('/service-schedule', 'ServiceScheduleController::index');
 $routes->get('/service-schedule/create', 'ServiceScheduleController::create');
 $routes->post('/service-schedule/store', 'ServiceScheduleController::store');
 $routes->post('/service-schedule/delete/(:num)', 'ServiceScheduleController::delete/$1');
+// app/Config/Routes.php
 
+// Rute yang sudah ada
+$routes->get('/service-schedule', 'ServiceScheduleController::index');
+
+// TAMBAHKAN RUTE BARU INI
+$routes->get('/jadwalservice', 'ServiceScheduleController::index');
 // ==== RIWAYAT PERAWATAN ====
 $routes->get('riwayatperawatan', 'RiwayatPerawatan::index');
+$routes->get('/riwayat-servis', 'ServiceScheduleController::riwayat');
 
 // ==== ADMIN - MANAGEMENT ====
 $routes->get('/admin/manajemenpengguna', 'AdminDashboard::manajemenPengguna');
@@ -59,10 +70,10 @@ $routes->get('manajemenjadwal/edit/(:num)', 'ManajemenJadwal::edit/$1');
 
 $routes->get('manajemenjadwal', 'ManajemenJadwal::index');
 $routes->get('manajemenjadwal/add', 'ManajemenJadwal::add');
-$routes->post('manajemenjadwal/store', 'ManajemenJadwal::store'); // jika ada fungsi simpan data
+$routes->post('manajemenjadwal/store', 'ManajemenJadwal::store'); 
 $routes->get('manajemenjadwal/edit/(:num)', 'ManajemenJadwal::edit/$1');
-$routes->post('manajemenjadwal/update/(:num)', 'ManajemenJadwal::update/$1'); // jika ada update data
-$routes->get('manajemenjadwal/delete/(:num)', 'ManajemenJadwal::delete/$1'); // jika ada delete
+$routes->post('manajemenjadwal/update/(:num)', 'ManajemenJadwal::update/$1'); 
+$routes->get('manajemenjadwal/delete/(:num)', 'ManajemenJadwal::delete/$1'); 
 
 
 
@@ -91,4 +102,6 @@ $routes->get('laporan/export-excel', 'LaporanController::exportExcel');
 $routes->get('/payment', 'PaymentController::index');
 $routes->post('/payment/process', 'PaymentController::process');
 $routes->get('/payment/history', 'PaymentController::history');
+$routes->get('/payment/form/(:num)', 'PaymentController::showPaymentForm/$1');
+$routes->post('/payment/process', 'PaymentController::processPayment');
 

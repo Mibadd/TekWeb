@@ -155,14 +155,37 @@
             text-decoration: none;
         }
         
-        .edit-link {
-            color: #2196f3;
-        }
-        
+        .edit-link,
         .delete-link {
-            color: #d32f2f;
+            padding: 5px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.2s ease;
         }
-        
+
+        .edit-link {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .edit-link:hover {
+            background-color: #1976d2;
+        }
+
+        .delete-link {
+            background-color: #e53935;
+            color: white;
+        }
+
+        .delete-link:hover {
+            background-color: #c62828;
+        }
+
         /* Modal styles */
         .modal {
             display: none;

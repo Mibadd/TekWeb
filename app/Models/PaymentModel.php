@@ -6,7 +6,19 @@ use CodeIgniter\Model;
 
 class PaymentModel extends Model
 {
-    protected $table = 'payments';
+ 
+    protected $table = 'pembayaran';
+
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'service_id', 'payment_method', 'payment_proof', 'payment_status', 'total_amount'];
+
+protected $allowedFields = [
+    'id_jadwal_servis',
+    'user_id', // <-- TAMBAHKAN BARIS INI
+    'metode_pembayaran',
+    'jumlah_bayar',
+    'status_pembayaran',
+    'tanggal_bayar',
+    'payment_proof'
+];
+    protected $useTimestamps = false;
 }

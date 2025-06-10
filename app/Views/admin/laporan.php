@@ -304,7 +304,7 @@
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-            Logout
+        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
         </div>
     </div>
 
@@ -382,7 +382,7 @@
             const y = date.getFullYear();
             const m = String(date.getMonth() + 1).padStart(2, '0');
             const d = String(date.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+            return ${y}-${m}-${d};
         };
 
         document.getElementById('startDate').value = formatDate(firstDay);
@@ -393,12 +393,8 @@
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
 
-        alert(`Filtering data dari ${startDate} sampai ${endDate}`);
-        // TODO: Tambahkan logika AJAX atau form submit untuk filter data sebenarnya
+        alert(Filtering data dari ${startDate} sampai ${endDate});
     });
-
-    // Jika ingin menambah event untuk tombol export (saat menggunakan tombol bukan <a>)
-    // Karena tombol export ini menggunakan <a>, tidak perlu event tambahan.
 </script>
 </body>
 </html>
