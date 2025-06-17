@@ -86,6 +86,7 @@
             padding-left: 1.2rem;
             margin-top: 0.5rem;
         }
+<<<<<<< HEAD
         .rekomendasi-header {
         text-align: center;
         font-weight: bold;
@@ -97,6 +98,8 @@
         margin-top: 3rem;
         margin-bottom: 1rem;
         }
+=======
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
     </style>
 </head>
 <body>
@@ -106,11 +109,28 @@
         <h2>Jadwal Servis</h2>
     </div>
 
+<<<<<<< HEAD
 
     <div class="row">
         <?php if (!empty($jadwals) && is_array($jadwals)) : ?>
             <?php foreach ($jadwals as $jadwal): ?>
                 <div class="col-md-4 mb-4 service-card" data-servis="<?= esc(strtolower($jadwal['jenis_servis'])) ?>">
+=======
+    <div class="row">
+        <?php if (!empty($jadwals) && is_array($jadwals)) : ?>
+            <?php foreach ($jadwals as $jadwal): ?>
+                
+                <?php
+                    $totalHargaSukuCadang = 0;
+                    if (!empty($jadwal['suku_cadang_dibeli'])) {
+                        foreach ($jadwal['suku_cadang_dibeli'] as $item) {
+                            $totalHargaSukuCadang += ($item['harga'] * $item['jumlah']);
+                        }
+                    }
+                ?>
+
+                <div class="col-md-4 mb-4">
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                     <div class="card-custom h-100 d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title"><?= esc($jadwal['jenis_motor']) ?></h5>
@@ -124,6 +144,7 @@
                                 </span>
                             </p>
 
+<<<<<<< HEAD
                             <?php if (!empty($jadwal['suku_cadang_dipakai'])): ?>
                                 <p class="card-text mb-0 mt-3"><strong>Suku Cadang Terpakai:</strong></p>
                                 <ul class="suku-cadang-list">
@@ -145,12 +166,35 @@
                         </div>
 
                         <div>
+=======
+                            <?php if (!empty($jadwal['suku_cadang_dibeli'])): ?>
+                                <p class="card-text mb-0 mt-3"><strong>Suku Cadang Terpakai:</strong></p>
+                                <ul class="suku-cadang-list">
+                                    <?php foreach ($jadwal['suku_cadang_dibeli'] as $item): ?>
+                                        <li><?= esc($item['nama']) ?> (<?= esc($item['jumlah']) ?>x)</li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <p class="card-text mt-2 fw-bold">Sub-Total Suku Cadang: Rp <?= number_format($totalHargaSukuCadang, 0, ',', '.') ?></p>
+                            <?php endif; ?>
+                            
+                            <p class="card-text mt-2 fw-bold">
+                                Grand Total Biaya: Rp <?= number_format($jadwal['total_harga'], 0, ',', '.') ?>
+                            </p>
+                        </div>
+
+                        <div>
+                            
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                             <?php if (strtolower(trim($jadwal['status'])) === 'tersedia'): ?>
                                 <a href="<?= site_url('service/payment-form/' . esc($jadwal['id'])) ?>" class="btn btn-primary mt-3">
                                     Booking
                                 </a>
                             <?php endif; ?>
+<<<<<<< HEAD
 
+=======
+                            
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                             <small class="text-muted mt-3 d-block">
                                 Terakhir diperbarui: <?= esc(date('d M Y H:i', strtotime($jadwal['updated_at']))) ?>
                             </small>
@@ -166,6 +210,7 @@
             </div>
         <?php endif; ?>
     </div>
+<<<<<<< HEAD
 
     <!-- Bagian rekomendasi -->
     <?php if (!empty($rekomendasiJadwals)) : ?>
@@ -255,5 +300,9 @@
 </script>
 
 
+=======
+</div>
+
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
 </body>
 </html>

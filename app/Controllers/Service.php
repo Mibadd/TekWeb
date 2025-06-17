@@ -7,6 +7,7 @@ class Service extends BaseController
 {
     public function detailservice()
     {
+<<<<<<< HEAD
         $jadwalModel = new \App\Models\ManajemenJadwalModel();
 
         // Ambil input filter dari query string (GET)
@@ -129,4 +130,37 @@ class Service extends BaseController
 }
 
 
+=======
+        $model = new ManajemenJadwalModel(); // Atau JadwalModel jika kamu pakai itu
+
+        $jenis_motor = $this->request->getGet('vehicle');
+        $tanggal = $this->request->getGet('date');
+        $jam = $this->request->getGet('service_time');
+        $jenis_servis = $this->request->getGet('service_category');
+
+        if ($jenis_motor || $tanggal || $jam || $jenis_servis) {
+            // Pakai filter hanya jika ada input dari form
+            $model->where('jenis_motor', $jenis_motor)
+                ->where('tanggal', $tanggal)
+                ->where('jam', $jam)
+                ->where('jenis_servis', $jenis_servis);
+        }
+
+        $data['jadwals'] = $model->findAll();
+
+        return view('detailservice', $data);
+    }
+
+    public function paymentForm($jadwal_id)
+    {
+        $model = new \App\Models\ManajemenJadwalModel();
+        $jadwal = $model->find($jadwal_id);
+
+        if (!$jadwal) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Jadwal tidak ditemukan');
+        }
+
+        return view('payment_form', ['jadwal' => $jadwal]);
+    }
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
 }

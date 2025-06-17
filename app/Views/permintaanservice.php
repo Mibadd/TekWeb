@@ -279,7 +279,11 @@
             </div>
 
             <div class="form-group">
+<<<<<<< HEAD
                 <label for="date">Tanggal Pembayaran</label>
+=======
+                <label for="date">Tanggal</label>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                 <input type="date" id="date" name="date" class="form-control" required>
             </div>
 

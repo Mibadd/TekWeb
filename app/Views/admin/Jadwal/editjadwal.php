@@ -283,7 +283,11 @@
             <div class="content-header">
                 <h2>Edit Jadwal Servis</h2>
             </div>
+<<<<<<< HEAD
             <form action="<?= site_url('manajemenjadwal/update/' . $jadwal['id']) ?>" method="POST" class="form-tambah">
+=======
+            <form action="<?= site_url('admin/manajemenjadwal/update/' . $jadwal['id']) ?>" method="POST" class="form-tambah">
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                 <div class="form-group">
                     <label for="jenis_motor">Jenis Motor</label>
                     <select name="jenis_motor" id="jenis_motor" required>
@@ -318,6 +322,7 @@
                     </select>
                 </div>
                 <div class="form-group">
+<<<<<<< HEAD
     <label for="id_sukucadang">Pilih Suku Cadang</label>
     <?php if (!empty($sukuCadang)): ?>
         <?php foreach ($sukuCadang as $suku): ?>
@@ -335,6 +340,26 @@
     <?php endif; ?>
 </div>
 
+=======
+                    <label for="suku_cadang">Suku Cadang yang Digunakan</label>
+                    <?php if (!empty($sukuCadang)) : ?>
+                        <?php foreach ($sukuCadang as $sc) : ?>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="suku_cadang[]"
+                                    value="<?= $sc['id'] ?>"
+                                    id="sc_<?= $sc['id'] ?>"
+                                    <?= in_array($sc['id'], explode(',', $jadwal['suku_cadang'] ?? '')) ? 'checked' : '' ?>
+                                />
+                                <label for="sc_<?= $sc['id'] ?>"><?= esc($sc['nama']) ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <p>Tidak ada suku cadang tersedia.</p>
+                    <?php endif; ?>
+                </div>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                 <div class="form-group">
                     <label for="status">Status Jadwal</label>
                     <select name="status" id="status" required>
@@ -344,8 +369,12 @@
                     </select>
                 </div>
                 <div class="button-group">
+<<<<<<< HEAD
                     <a href="<?= base_url('manajemenjadwal') ?>" class="cancel-btn">Batal</a>
 
+=======
+                    <a href="<?= base_url('admin/manajemenjadwal') ?>" class="cancel-btn">Batal</a>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
                     <button type="submit" class="submit-btn">Simpan</button>
                 </div>
             </form>

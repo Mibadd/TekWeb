@@ -52,9 +52,16 @@ $routes->get('/service-schedule', 'ServiceScheduleController::index');
 $routes->get('/service-schedule/create', 'ServiceScheduleController::create');
 $routes->post('/service-schedule/store', 'ServiceScheduleController::store');
 $routes->post('/service-schedule/delete/(:num)', 'ServiceScheduleController::delete/$1');
+// app/Config/Routes.php
 
+// Rute yang sudah ada
+$routes->get('/service-schedule', 'ServiceScheduleController::index');
+
+// TAMBAHKAN RUTE BARU INI
+$routes->get('/jadwalservice', 'ServiceScheduleController::index');
 // ==== RIWAYAT PERAWATAN ====
 $routes->get('riwayatperawatan', 'RiwayatPerawatan::index');
+$routes->get('/riwayat-servis', 'ServiceScheduleController::riwayat');
 
 // ==== ADMIN - MANAGEMENT ====
 $routes->get('admin/manajemenpengguna', 'ManajemenPengguna::index');
@@ -98,7 +105,12 @@ $routes->get('/admin/laporan/export-excel', 'LaporanController::exportExcel');
 $routes->get('/payment', 'PaymentController::index');
 $routes->post('/payment/process', 'PaymentController::process');
 $routes->get('/payment/history', 'PaymentController::history');
+<<<<<<< HEAD
 $routes->get('payment/list', 'PaymentController::list');
+=======
+$routes->get('/payment/form/(:num)', 'PaymentController::showPaymentForm/$1');
+$routes->post('/payment/process', 'PaymentController::processPayment');
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
 
 $routes->get('service/payment-form/(:num)', 'Service::paymentForm/$1');
 $routes->get('/payment/(:num)', 'Payment::index/$1');

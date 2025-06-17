@@ -48,6 +48,7 @@ class ManajemenJadwal extends Controller
     }
 
     // Mengupdate status & suku cadang
+<<<<<<< HEAD
    public function update($id)
 {
     // Update data jadwal
@@ -104,6 +105,51 @@ class ManajemenJadwal extends Controller
 }
 
 
+=======
+    public function update()
+    {
+        $id = $this->request->getPost('id');
+        $data = [
+            'status' => $this->request->getPost('status'),
+        ];
+
+        $this->jadwalModel->update($id, $data);
+
+        // Hapus relasi lama
+        $builder = $this->db->table('jadwal_sukucadang');
+        $builder->where('jadwal_id', $id)->delete();
+
+        // Tambah relasi baru
+        $sukuCadangIds = $this->request->getPost('sukucadang') ?? [];
+        foreach ($sukuCadangIds as $sukuId) {
+            $builder->insert([
+                'jadwal_id' => $id,
+                'sukucadang_id' => $sukuId
+            ]);
+        }
+
+        return redirect()->to('/manajemenjadwal');
+    }
+
+    // Menampilkan form edit data jadwal
+    public function edit($id)
+    {
+        $jadwalModel = new ManajemenJadwalModel();
+        $sukuCadangModel = new SukuCadangModel();
+
+        $jadwal = $jadwalModel->find($id);
+        $sukuCadang = $sukuCadangModel->findAll(); // Pastikan ini dipanggil
+
+        if (!$jadwal) {
+            return redirect()->to('/admin/manajemenjadwal')->with('error', 'Data tidak ditemukan.');
+        }
+
+        return view('admin/jadwal/editjadwal', [
+            'jadwal' => $jadwal,
+            'sukuCadang' => $sukuCadang // pastikan ini dikirim
+        ]);
+    }
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
     // Menyimpan hasil edit data jadwal
     public function updateDetail($id)
     {
@@ -117,7 +163,11 @@ class ManajemenJadwal extends Controller
 
         $this->jadwalModel->update($id, $data);
 
+<<<<<<< HEAD
         return redirect()->to('manajemenjadwal')->with('success', 'Jadwal berhasil diperbarui.');
+=======
+        return redirect()->to('/manajemenjadwal')->with('success', 'Jadwal berhasil diperbarui.');
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
     }
 
     public function formTambah()

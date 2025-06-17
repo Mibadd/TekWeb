@@ -6,18 +6,23 @@ use CodeIgniter\Model;
 
 class ServiceScheduleModel extends Model
 {
+<<<<<<< HEAD
     protected $table = 'service_schedules';
     
+=======
+    protected $table = 'jadwal_servis';
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
     protected $primaryKey = 'id';
 
+    // app/Models/ServiceScheduleModel.php
     protected $allowedFields = [
-        'user_id',
-        'date',
-        'service_type',
+        'jenis_motor',
+        'tanggal',
+        'jam',
+        'jenis_servis',
+        'biaya_jasa', // <-- TAMBAHKAN INI
         'status',
-        'permintaan_service_id',
-        'created_at',
-        'updated_at',
+        'total_harga'
     ];
 
     protected $useTimestamps = true;

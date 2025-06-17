@@ -159,6 +159,75 @@
         .delete-link {
             padding: 5px 10px;
             font-size: 12px;
+<<<<<<< HEAD
+=======
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.2s ease;
+        }
+
+        .edit-link {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .edit-link:hover {
+            background-color: #1976d2;
+        }
+
+        .delete-link {
+            background-color: #e53935;
+            color: white;
+        }
+
+        .delete-link:hover {
+            background-color: #c62828;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            color: #1a3153;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
             border: none;
             border-radius: 4px;
             text-decoration: none;

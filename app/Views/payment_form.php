@@ -186,6 +186,7 @@
             <label><strong>Pilih Metode Pembayaran</strong></label>
             <div>
                 <label><input type="radio" name="payment_method" value="Transfer Bank" required> Transfer Bank (Mandiri)</label><br>
+<<<<<<< HEAD
                 <label><input type="radio" name="payment_method" value="OVO"> OVO</label><br>
                 <label><input type="radio" name="payment_method" value="GoPay"> GoPay</label><br>
                 <label><input type="radio" name="payment_method" value="Dana"> Dana</label><br>
@@ -193,6 +194,14 @@
             </div>
         </div>
 
+=======
+                <label><input type="radio" name="payment_method" value="E-Wallet"> OVO</label><br>
+                <label><input type="radio" name="payment_method" value="E-Wallet"> GoPay</label><br>
+                <label><input type="radio" name="payment_method" value="E-Wallet"> Dana</label><br>
+                <label><input type="radio" name="payment_method" value="Bayar di Tempat"> Bayar di Tempat (Tunai)</label>
+            </div>
+        </div>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         <button type="submit" class="btn btn-success">Bayar</button>
     </form>
 </div>

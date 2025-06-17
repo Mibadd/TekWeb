@@ -322,7 +322,11 @@
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
+<<<<<<< HEAD
             <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
+=======
+        <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         </div>
     </div>
 
@@ -414,9 +418,13 @@
             const y = date.getFullYear(); //ambil tahun
             const m = String(date.getMonth() + 1).padStart(2, '0');
             const d = String(date.getDate()).padStart(2, '0');
+<<<<<<< HEAD
             //bulan dimulai dari 0, jadi ditambah 1
             // .padStart(2, '0') → kalau hanya 1 digit, ditambah nol di depan. Misalnya 6 jadi 06
             return '${y}-${m}-${d}'; //mengembalikan string seperti2025-06-01
+=======
+            return ${y}-${m}-${d};
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         };
 
         document.getElementById('startDate').value = formatDate(firstDay);

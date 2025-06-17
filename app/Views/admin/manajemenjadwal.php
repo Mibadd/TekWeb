@@ -57,6 +57,7 @@
             border-top: 1px solid #e0e0e0;
             padding: 15px 20px;
             cursor: pointer;
+<<<<<<< HEAD
             color: #fff;
             text-align: center;
         }
@@ -66,6 +67,19 @@
             font-weight: 600;
         }
         
+=======
+            color: #333;
+            text-align: center;
+        }
+        .logout a {
+            color: inherit;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .logout a:hover {
+            color: #e74c3c;
+        }
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         /* Content Styles */
         .content {
             flex: 1;
@@ -253,6 +267,7 @@
             tbody td:nth-of-type(5):before { content: "Status"; }
             tbody td:nth-of-type(6):before { content: "Suku Cadang"; }
             tbody td:nth-of-type(7):before { content: "Aksi"; }
+<<<<<<< HEAD
         }
 
         .btn-logout {
@@ -269,6 +284,8 @@
 
         .btn-logout:hover {
             background-color: #b62828;
+=======
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         }
     </style>
 </head>
@@ -287,7 +304,11 @@
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
+<<<<<<< HEAD
             <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
+=======
+            <a href="<?= base_url('auth/logout') ?>">Logout</a>
+>>>>>>> 33004b58cc8a941cf1233aa7d3325d750b060f59
         </div>
     </div>
 
