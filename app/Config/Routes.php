@@ -86,8 +86,8 @@ $routes->post('admin/sukucadang/hapus/(:num)', 'SukuCadang::hapus/$1');
 
 
 // ==== ADMIN - STATISTIK, LAPORAN, LOG ====
-$routes->get('/admin/laporan', 'AdminDashboard::laporan');
 
+$routes->get('/admin/laporan', 'LaporanController::index');
 // ==== LAPORAN ====
 $routes->get('/admin/laporan', 'LaporanController::index');
 $routes->get('/admin/laporan/filter', 'LaporanController::filter');
