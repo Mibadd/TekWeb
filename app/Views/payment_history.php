@@ -5,48 +5,69 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container my-5">
+    <h2 class="mb-4">Resi Pembayaran Servis</h2>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="<?= base_url('/payment') ?>" class="btn btn-primary">← Kembali</a>
-        <h2 class="mb-0 text-center flex-grow-1">Riwayat Pembayaran</h2>
-        <div style="width: 100px;"></div> <!-- spacer supaya judul benar-benar di tengah -->
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Detail Pembayaran</h5>
+
+            <div class="mb-2">
+                <strong>Nomor Resi:</strong> <?= esc($payment['id']) ?>
+            </div>
+            <div class="mb-2">
+    <strong>Jenis Servis:</strong> <?= esc($service['jenis_servis']) ?>
+</div>
+<div class="mb-2">
+    <strong>Harga Servis:</strong> Rp <?= number_format($service['biaya_jasa'], 0, ',', '.') ?>
+</div>
+
+
+            <div class="mb-3">
+                <strong>Suku Cadang:</strong>
+                <?php if (!empty($suku_cadang)): ?>
+                    <div class="table-responsive mt-2">
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($suku_cadang as $sc): ?>
+                                    <tr>
+                                        <td><?= esc($sc['nama']) ?></td>
+                                        <td><?= esc($sc['jumlah']) ?></td>
+                                        <td>Rp <?= number_format($sc['harga'], 0, ',', '.') ?></td>
+                                        <td>Rp <?= number_format($sc['harga'] * $sc['jumlah'], 0, ',', '.') ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted mt-2">Tidak ada suku cadang</p>
+                <?php endif ?>
+            </div>
+
+            <div class="mb-2">
+                <strong>Total:</strong> Rp <?= number_format($payment['total_amount'], 0, ',', '.') ?>
+            </div>
+            <div class="mb-2">
+                <strong>Metode Pembayaran:</strong> <?= esc($payment['payment_method']) ?>
+            </div>
+            <div class="mb-3">
+                <strong>Tanggal:</strong> <?= date('d-m-Y', strtotime($payment['created_at'])) ?>
+            </div>
+
+            <a href="<?= base_url("/payment/downloadPdf/{$payment['id']}") ?>" class="btn btn-primary" target="_blank">
+                Download PDF
+            </a>
+        </div>
     </div>
-
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th style="width: 5%;">No</th>
-                <th>Metode Pembayaran</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Bukti Pembayaran</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if(!empty($payments)): ?>
-                <?php foreach($payments as $index => $payment): ?>
-                    <tr>
-                        <td><?= $index + 1 ?></td>
-                        <td><?= esc($payment['payment_method']) ?></td>
-                        <td>Rp <?= number_format($payment['total_amount'], 0, ',', '.') ?></td>
-                        <td><?= esc($payment['payment_status']) ?></td>
-                        <td>
-                            <?php if($payment['payment_proof']): ?>
-                                <a href="<?= base_url($payment['payment_proof']) ?>" target="_blank">Lihat Bukti</a>
-                            <?php else: ?>
-                                Tidak Ada Bukti
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="5" class="text-center">Belum ada riwayat pembayaran</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
 </div>
 </body>
 </html>

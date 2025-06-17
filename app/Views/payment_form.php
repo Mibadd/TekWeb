@@ -119,36 +119,86 @@
 <body>
 
 <div class="payment-card">
-    <h2>Pembayaran Service</h2>
+    <h2>Pembayaran Servis</h2>
+
     <form action="<?= base_url('/payment/process'); ?>" method="post" enctype="multipart/form-data">
         <div class="card">
             <h5>Ringkasan Tagihan</h5>
-            <div class="payment-summary"><span>Ganti Oli Mesin</span><span>Rp 75.000</span></div>
-            <div class="payment-summary"><span>Service Ringan</span><span>Rp 100.000</span></div>
-            <div class="payment-summary"><span>Filter Udara Baru</span><span>Rp 35.000</span></div>
+
+            <!-- Jenis Servis -->
+            <div class="mb-2 mt-3">
+                <strong>Jenis Servis:</strong>
+                <div class="payment-summary">
+                    <?php if (isset($jadwal)) : ?>
+                        <span><?= esc($jadwal['jenis_servis']) ?></span>
+                        <span>Rp <?= number_format((int)$jadwal['biaya_jasa'], 0, ',', '.') ?></span>
+                    <?php else : ?>
+                        <span>Belum ada data jadwal.</span>
+                        <span>Rp 0</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Suku Cadang -->
+            <div class="mb-2 mt-3">
+                <strong>Suku Cadang:</strong>
+                <?php 
+                    $totalHargaSukuCadang = 0;
+                    if (isset($jadwal) && !empty($jadwal['suku_cadang_dibeli'])):
+                        foreach ($jadwal['suku_cadang_dibeli'] as $item):
+                            $subtotal = $item['harga'] * $item['jumlah'];
+                            $totalHargaSukuCadang += $subtotal;
+                ?>
+                    <div class="payment-summary">
+                        <span><?= esc($item['nama']) ?> (<?= esc($item['jumlah']) ?>× Rp <?= number_format($item['harga'], 0, ',', '.') ?>)</span>
+                        <span>Rp <?= number_format($subtotal, 0, ',', '.') ?></span>
+                    </div>
+                <?php 
+                        endforeach;
+                    else:
+                ?>
+                    <div class="payment-summary">
+                        <span>Tidak ada suku cadang</span>
+                        <span>Rp 0</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <?php 
+                $hargaServis = isset($jadwal) ? (int)$jadwal['biaya_jasa'] : 0;
+                $totalBayar = $hargaServis + $totalHargaSukuCadang;
+            ?>
+
             <hr>
-            <div class="payment-summary fw-bold"><span>Total</span><span>Rp 210.000</span></div>
-            <input type="hidden" name="total_amount" value="210000">
+            <div class="payment-summary fw-bold">
+                <span>Total</span>
+                <span>Rp <?= number_format($totalBayar, 0, ',', '.') ?></span>
+            </div>
+
+            <!-- Hidden Inputs -->
+            <input type="hidden" name="jadwal_id" value="<?= isset($jadwal) ? esc($jadwal['id']) : '' ?>">
+            <input type="hidden" name="total_amount" value="<?= $totalBayar ?>">
+
+            
         </div>
 
-        <div class="mb-3">
-            <label>Pilih Metode Pembayaran</label>
+        <div class="mb-3 mt-3">
+            <label><strong>Pilih Metode Pembayaran</strong></label>
             <div>
-                <label><input type="radio" name="payment_method" value="Transfer Bank" required> Transfer Bank (BCA, BRI, Mandiri)</label><br>
-                <label><input type="radio" name="payment_method" value="E-Wallet"> E-Wallet (OVO, Dana, GoPay)</label><br>
+                <label><input type="radio" name="payment_method" value="Transfer Bank" required> Transfer Bank (Mandiri)</label><br>
+                <label><input type="radio" name="payment_method" value="OVO"> OVO</label><br>
+                <label><input type="radio" name="payment_method" value="GoPay"> GoPay</label><br>
+                <label><input type="radio" name="payment_method" value="Dana"> Dana</label><br>
                 <label><input type="radio" name="payment_method" value="Bayar di Tempat"> Bayar di Tempat (Tunai)</label>
             </div>
         </div>
 
-        <div class="mb-3">
-            <label>Upload Bukti Pembayaran</label>
-            <input type="file" name="payment_proof" class="form-control mt-2">
-        </div>
-
-        <button type="submit" class="btn btn-success">Konfirmasi Pembayaran</button>
-        <a href="<?= base_url('payment/history'); ?>" class="payment-history-link">Riwayat Pembayaran</a>
+        <button type="submit" class="btn btn-success">Bayar</button>
     </form>
 </div>
+
+
+
 
 </body>
 </html>

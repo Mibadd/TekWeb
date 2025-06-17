@@ -9,24 +9,31 @@ use CodeIgniter\Controller;
 class AdminDashboard extends Controller
 {
     public function index()
-    {
-        $laporanModel = new LaporanModel();
+{
+    $laporanModel = new LaporanModel();
 
-        $totalServices = $laporanModel->countAllResults(); // total servis
-        $pendingRequests = $laporanModel->where('tanggal', date('Y-m-d'))->countAllResults(); // antrean hari ini
-        $income = $laporanModel->getTotalPendapatan(); // total pendapatan, buat method ini di model
-        
-        $chartData = $laporanModel->getServisPerBulan();
+    $totalServices = $laporanModel->countAllServis();
+    $pendingRequests = $laporanModel->countPendingRequestsHariIni();
+    $income = $laporanModel->getTotalPendapatan();
 
-        $data = [
-            'totalServices' => $totalServices,
-            'pendingRequests' => $pendingRequests,
-            'income' => $income,
-            'chartData' => $chartData,
-        ];
+    $chartData = $laporanModel->getServisPerBulan();
+    $incomeChartData = $laporanModel->getPendapatanPerBulan(); // <-- Tambahan grafik pendapatan
 
-        return view('admin/dashboard', $data);
-    }
+    $sukuCadangModel = new \App\Models\SukuCadangModel();
+    $sukuCadangMenipis = $sukuCadangModel->getSukuCadangMenipis();
+
+    $data = [
+        'totalServices' => $totalServices,
+        'pendingRequests' => $pendingRequests,
+        'income' => $income,
+        'chartData' => $chartData,
+        'incomeChartData' => $incomeChartData, // <-- dikirim ke view
+        'stokMenipis' => $sukuCadangMenipis
+    ];
+
+    return view('admin/dashboard', $data);
+}
+
 
     public function manajemenPengguna()
     {

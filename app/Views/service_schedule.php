@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="content-header">
-        <h2>Jadwal Service</h2>
+        <h2>Jadwal Service Tersedia</h2>
     </div>
 
     <div class="table-responsive">
@@ -12,32 +12,37 @@
             <thead>
                 <tr>
                     <th>Tanggal</th>
+                    <th>Jenis Motor</th>
                     <th>Jenis Service</th>
+                    <th>Jam</th>
                     <th>Status</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($schedules as $schedule): ?>
-                <tr>
-                    <td data-label="Tanggal"><?= esc($schedule['date']); ?></td>
-                    <td data-label="Jenis Service"><?= esc($schedule['service_type']); ?></td>
-                    <td data-label="Status" class="status-<?= strtolower(str_replace(' ', '-', $schedule['status'])); ?>">
-                        <?= esc($schedule['status']); ?>
-                    </td>
-                    <td data-label="Aksi">
-                        <div class="action-buttons">
-                            <a href="<?= base_url('service-schedule/'.$schedule['id']); ?>" class="btn btn-info"><i class="fa fa-eye"></i> <span class="btn-text">Detail</span></a>
-                        </div>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+                <?php if (!empty($schedules)): ?>
+                    <?php foreach($schedules as $schedule): ?>
+                        <tr>
+                            <td data-label="Tanggal"><?= esc(date('d M Y', strtotime($schedule['tanggal']))); ?></td>
+                            <td data-label="Jenis Motor"><?= esc($schedule['jenis_motor']); ?></td>
+                            <td data-label="Jenis Service"><?= esc($schedule['jenis_servis']); ?></td>
+                            <td data-label="Jam"><?= esc($schedule['jam']); ?></td>
+                            <td data-label="Status" class="status-<?= strtolower(str_replace(' ', '-', $schedule['status'])); ?>">
+                                <?= esc($schedule['status']); ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5" style="text-align: center;">Tidak ada jadwal yang tersedia saat ini.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
 
 <style>
+    /* (CSS dari file Anda sebelumnya bisa diletakkan di sini) */
     body {
         display: flex;
         background-color: #f5f5f5;
@@ -47,20 +52,13 @@
     }
 
     .content {
-        width: 180%;
-        max-width: 1500px;
+        width: 100%;
+        max-width: 1200px;
         background: #fff;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        margin: 20px;
-    }
-
-    .content-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
+        margin: 20px auto;
     }
 
     .content-header h2 {
@@ -70,14 +68,12 @@
 
     .table-responsive {
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
 
     .service-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 10px;
-        min-width: 600px;
     }
 
     .service-table th, .service-table td {
@@ -87,104 +83,13 @@
     }
 
     .service-table th {
-        background-color: rgb(236, 236, 236);
-        color: #000;
+        background-color: #f2f2f2;
+        color: #333;
     }
-
-    .service-table tr:hover {
-        background-color: #f4f4f9;
-    }
-
-    .status-selesai { color: green; font-weight: bold; }
-    .status-tertunda { color: orange; font-weight: bold; }
-    .status-belum-dilaksanakan { color: red; font-weight: bold; }
-
-    .action-buttons a {
-        text-decoration: none;
-    }
-
-    .action-buttons a .btn {
-        padding: 6px 10px;
-        color: white;
-        background-color: #17a2b8;
-        border-radius: 5px;
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .action-buttons a .btn:hover {
-        background-color: #138496;
-    }
-
-    @media (max-width: 768px) {
-        .content {
-            padding: 15px;
-            margin: 10px;
-        }
-        
-        .service-table {
-            min-width: 100%;
-        }
-        
-        .service-table thead {
-            display: none;
-        }
-        
-        .service-table tr {
-            display: block;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .service-table td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: right;
-            padding-left: 50%;
-            position: relative;
-            border: none;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .service-table td:before {
-            content: attr(data-label);
-            position: absolute;
-            left: 15px;
-            width: 45%;
-            padding-right: 10px;
-            font-weight: bold;
-            text-align: left;
-        }
-        
-        .service-table td:last-child {
-            border-bottom: 0;
-        }
-        
-        .action-buttons a .btn {
-            margin-left: auto;
-        }
-        
-        .btn-text {
-            display: none;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .content-header h2 {
-            font-size: 1.3rem;
-        }
-        
-        .service-table td {
-            padding-left: 40%;
-        }
-        
-        .service-table td:before {
-            width: 35%;
-        }
+    
+    .status-tersedia {
+        color: green;
+        font-weight: bold;
     }
 </style>
 

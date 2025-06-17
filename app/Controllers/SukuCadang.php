@@ -15,9 +15,9 @@ class SukuCadang extends BaseController
 
 public function index()
 {
-    $kategori = $this->request->getPost('kategori');
-    $status   = $this->request->getPost('status');
-    $nama     = $this->request->getPost('nama');
+    $kategori = $this->request->getGet('kategori');
+    $status   = $this->request->getGet('status');
+    $nama     = $this->request->getGet('nama');
 
     $builder = $this->sukuCadangModel;
 
@@ -42,41 +42,55 @@ public function index()
 
     return view('admin/sukucadang', $data);
 }
-
-
-
+    public function getDetailByJadwal($jadwalId)
+    {
+        return $this->select('sukucadang.nama, sukucadang.harga, jadwal_sukucadang.jumlah')
+                    ->join('sukucadang', 'sukucadang.id = jadwal_sukucadang.sukucadang_id')
+                    ->where('jadwal_sukucadang.jadwal_id', $jadwalId)
+                    ->findAll();
+    }
 
 
     public function tambah()
-    {
-        $kode = $this->request->getPost('kode');
-        $nama = $this->request->getPost('nama_sukucadang');
-        $kategori = $this->request->getPost('kategori');
-        $stok = (int) $this->request->getPost('stok');
-        $harga = (int) $this->request->getPost('harga');
+{
+    $kode     = $this->generateKodeSukuCadang(); // Otomatis
+    $nama     = $this->request->getPost('nama');
+    $kategori = $this->request->getPost('kategori');
+    $stok     = (int) $this->request->getPost('stok');
+    $harga    = (int) $this->request->getPost('harga');
 
-        // Set status otomatis berdasarkan stok
-        if ($stok > 5) {
-            $status = 'Tersedia';
-        } elseif ($stok > 0) {
-            $status = 'Stok Menipis';
-        } else {
-            $status = 'Habis';
-        }
-
-        $data = [
-            'kode' => $kode,
-            'nama' => $nama,
-            'kategori' => $kategori,
-            'stok' => $stok,
-            'harga' => $harga,
-            'status' => $status,
-        ];
-
-        $this->sukuCadangModel->insert($data);
-
-        return redirect()->to(base_url('admin/sukucadang'))->with('success', 'Suku Cadang berhasil ditambahkan.');
+    // Set status otomatis
+    if ($stok > 5) {
+        $status = 'Tersedia';
+    } elseif ($stok > 0) {
+        $status = 'Stok Menipis';
+    } else {
+        $status = 'Habis';
     }
+
+    $data = [
+        'kode'     => $kode,
+        'nama'     => $nama,
+        'kategori' => $kategori,
+        'stok'     => $stok,
+        'harga'    => $harga,
+        'status'   => $status,
+    ];
+
+    $this->sukuCadangModel->insert($data);
+
+    return redirect()->to(base_url('admin/sukucadang'))->with('success', 'Suku Cadang berhasil ditambahkan.');
+}
+
+private function generateKodeSukuCadang()
+{
+    $last = $this->sukuCadangModel->orderBy('id', 'DESC')->first();
+    $lastId = $last ? $last['id'] : 0;
+    $nextId = $lastId + 1;
+
+    return 'SCD-' . str_pad($nextId, 3, '0', STR_PAD_LEFT); // Contoh: SCD-001
+}
+
 
     // Fungsi untuk mengambil data untuk form edit
     public function getById($id)

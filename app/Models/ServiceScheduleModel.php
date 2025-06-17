@@ -7,6 +7,7 @@ use CodeIgniter\Model;
 class ServiceScheduleModel extends Model
 {
     protected $table = 'service_schedules';
+    
     protected $primaryKey = 'id';
 
     protected $allowedFields = [

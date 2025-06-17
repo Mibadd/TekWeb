@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
+// app/Controllers/Home.php
     public function dashboard()
     {
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/auth/login');
         }
-        return view('dashboard');
+        return view('dashboard'); // <-- Masalahnya di sini
     }
 
     public function jadwalservice()

@@ -1,62 +1,98 @@
 <?php
 
-namespace App\Models;
-use CodeIgniter\Model;
+namespace App\Models; //Menentukan bahwa class ini berada di folder Models.
+use CodeIgniter\Model; //Mengimpor class Model dari CodeIgniter sebagai parent class, agar bisa menggunakan fitur ORM bawaan (seperti builder, db, dll).
 
-class LaporanModel extends Model
+class LaporanModel extends Model //Mendeklarasikan model dengan nama LaporanModel, turunan dari CodeIgniter\Model.
 {
-    protected $table = 'servis'; // Sesuaikan nama tabel
-    protected $allowedFields = ['tanggal', 'nama_pelanggan', 'kendaraan', 'jenis_servis', 'total'];
+    protected $table = 'payments'; // Tetap ambil dari tabel payments
+    protected $primaryKey = 'id';
+    protected $allowedFields = ['user_id', 'service_id', 'payment_method', 'payment_proof', 'payment_status', 'total_amount'];
 
     public function getLaporan($start = null, $end = null)
-    {
-        $builder = $this->db->table('servis');
-        $builder->select('servis.tanggal, pelanggan.nama as nama_pelanggan, kendaraan.nama_kendaraan as kendaraan, servis.jenis_servis, servis.total');
-        $builder->join('pelanggan', 'pelanggan.id = servis.pelanggan_id');
-        $builder->join('kendaraan', 'kendaraan.id = servis.kendaraan_id'); // sesuaikan nama kolom
-
-
-        if ($start && $end) {
-            $builder->where('tanggal >=', $start);
-            $builder->where('tanggal <=', $end);
-        }
-
-        return $builder->get()->getResultArray();
-    }
-
-    public function getTotalPendapatan($start = null, $end = null)
-    {
-        $builder = $this->builder();
-        if ($start && $end) {
-            $builder->where('tanggal >=', $start);
-            $builder->where('tanggal <=', $end);
-        }
-
-        return $builder->selectSum('total')->get()->getRow()->total ?? 0;
-    }
-
-    public function getServisPerBulan()
 {
-    $builder = $this->db->table('servis');
-    $builder->select("DATE_FORMAT(tanggal, '%Y-%m') as bulan, COUNT(*) as jumlah");
-    $builder->groupBy("DATE_FORMAT(tanggal, '%Y-%m')");
-    $builder->orderBy("bulan", 'ASC');
+    $builder = $this->db->table('payments p');
+    $builder->select('j.tanggal AS tanggal, u.name AS nama_pelanggan, j.jenis_motor AS kendaraan, j.jenis_servis, p.total_amount AS total');
+    $builder->join('users u', 'u.id = p.user_id');
+    $builder->join('jadwal_servis j', 'j.id = p.service_id');
+    $builder->where('u.role', 'user');
+
+    if ($start && $end) {
+        $builder->where('j.tanggal >=', $start);
+        $builder->where('j.tanggal <=', $end);
+    }
 
     return $builder->get()->getResultArray();
 }
 
+
+
+public function getTotalPendapatan($start = null, $end = null)
+{
+    $builder = $this->db->table('payments p')
+        ->selectSum('p.total_amount')
+        ->join('users u', 'u.id = p.user_id')
+        ->join('jadwal_servis j', 'j.id = p.service_id')
+        ->where('u.role', 'user');
+
+    if ($start && $end) {
+        $builder->where('j.tanggal >=', $start);
+        $builder->where('j.tanggal <=', $end);
+    }
+
+    $result = $builder->get()->getRow();
+    return $result->total_amount ?? 0;
+}
+
+
+    public function getServisPerBulan()
+{
+    return $this->db->table('payments p')
+        ->select("DATE_FORMAT(j.tanggal, '%M %Y') as bulan, COUNT(*) as jumlah")
+        ->join('users u', 'u.id = p.user_id')
+        ->join('jadwal_servis j', 'j.id = p.service_id')
+        ->where('u.role', 'user')
+        ->groupBy("DATE_FORMAT(j.tanggal, '%Y-%m')")
+        ->orderBy("MIN(j.tanggal)", 'ASC')
+        ->get()
+        ->getResultArray();
+}
+
+
 public function countAllServis()
 {
-    return $this->db->table($this->table)->countAllResults();
+    return $this->db->table('payments')
+        ->join('users', 'users.id = payments.user_id')
+        ->where('users.role', 'user')
+        ->countAllResults();
 }
+
+
 
 public function countPendingRequestsHariIni()
 {
-    $today = date('Y-m-d');
-    return $this->db->table($this->table)
-        ->where('tanggal', $today)
-         // Pastikan kolom `status` ada dan sesuai
+    return $this->db->table('payments p')
+        ->join('users u', 'u.id = p.user_id')
+        ->join('jadwal_servis j', 'j.id = p.service_id')
+        ->where('u.role', 'user')
+        ->where('DATE(j.tanggal)', date('Y-m-d'))
         ->countAllResults();
+}
+
+
+public function getPendapatanPerBulan()
+{
+    return $this->db->query("
+        SELECT 
+            DATE_FORMAT(j.tanggal, '%M %Y') AS bulan, 
+            SUM(p.total_amount) AS total
+        FROM payments p
+        JOIN jadwal_servis j ON j.id = p.service_id
+        JOIN users u ON u.id = p.user_id
+        WHERE u.role = 'user'
+        GROUP BY DATE_FORMAT(j.tanggal, '%Y-%m')
+        ORDER BY MIN(j.tanggal)
+    ")->getResultArray();
 }
 
 

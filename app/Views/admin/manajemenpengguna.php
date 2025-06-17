@@ -155,86 +155,35 @@
             text-decoration: none;
         }
         
-        .edit-link {
-            color: #2196f3;
-        }
-        
+        .edit-link,
         .delete-link {
-            color: #d32f2f;
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 500px;
-            max-width: 90%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eaeaea;
-        }
-        
-        .modal-title {
-            font-size: 18px;
-            color: #1a3153;
-            font-weight: 600;
-        }
-        
-        .close-btn {
-            background: none;
+            padding: 5px 10px;
+            font-size: 12px;
             border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: #666;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
+            border-radius: 4px;
+            text-decoration: none;
             font-weight: 500;
-            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.2s ease;
         }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
+
+        .edit-link {
+            background-color: #2196f3;
+            color: white;
         }
-        
-        .form-select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: white;
+
+        .edit-link:hover {
+            background-color: #1976d2;
+        }
+
+        .delete-link {
+            background-color: #e53935;
+            color: white;
+        }
+
+        .delete-link:hover {
+            background-color: #c62828;
         }
         
         .btn-group {
@@ -271,8 +220,24 @@
         .btn-secondary:hover {
             background-color: #e5e5e5;
         }
+        .btn-logout {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #b62828;
+        }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -287,7 +252,7 @@
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-            <a href="<?= base_url('auth/logout'); ?>" class="menu-item">Logout</a>
+            <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
         </div>
     </div>
 
@@ -295,7 +260,7 @@
     <div class="content">
         <div class="content-header">
             <h2>Manajemen Pengguna</h2>
-            <button class="add-button" id="btnTambahPengguna">Tambah Pengguna</button>
+            <a href="<?= base_url('admin/manajemenpengguna/formtambah') ?>" class="add-button">Tambah Pengguna</a>
         </div>
 
         <div class="user-container">
@@ -316,14 +281,7 @@
                         <td><?= esc($user['role']) ?></td>
                         <td>
                             <div class="action-links">
-                                <a href="#" class="edit-link"
-                                   onclick="openEditModal(this)"
-                                   data-id="<?= $user['id'] ?>"
-                                   data-name="<?= esc($user['name']) ?>"
-                                   data-email="<?= esc($user['email']) ?>"
-                                   data-role="<?= esc($user['role']) ?>">
-                                   Edit
-                                </a>
+                                <a href="<?= base_url('admin/manajemenpengguna/formedit/' . $user['id']) ?>" class="edit-link">Edit</a>
                                 <a href="#" class="delete-link"
                                    onclick="confirmDelete(this)"
                                    data-id="<?= $user['id'] ?>"
@@ -336,70 +294,6 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Modal Tambah Pengguna -->
-    <div id="addUserModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Tambah Pengguna Baru</h2>
-                <button class="close-btn" onclick="closeModal('addUserModal')">&times;</button>
-            </div>
-            <form id="addUserForm" method="POST" action="<?= base_url('admin/manajemenpengguna/tambah') ?>">
-                <div class="form-group">
-                    <label for="nama">Nama</label>
-                    <input type="text" id="nama" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role" class="form-select" required>
-                        <option value="">Pilih Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
-                    </select>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addUserModal')">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Edit Pengguna -->
-    <div id="editUserModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Edit Pengguna</h2>
-                <button class="close-btn" onclick="closeModal('editUserModal')">&times;</button>
-            </div>
-            <form id="editUserForm" method="POST" action="<?= base_url('admin/manajemenpengguna/edit') ?>">
-                <input type="hidden" id="edit_id" name="id">
-                <div class="form-group">
-                    <label for="edit_nama">Nama</label>
-                    <input type="text" id="edit_nama" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit_email">Email</label>
-                    <input type="email" id="edit_email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit_role">Role</label>
-                    <select id="edit_role" name="role" class="form-select" required>
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
-                    </select>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('editUserModal')">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </form>
         </div>
     </div>
 

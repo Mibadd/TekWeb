@@ -6,7 +6,7 @@
     <a href="<?= base_url('jadwalservice'); ?>" class="menu-item">Jadwal Service</a>
     <a href="<?= base_url('riwayatperawatan'); ?>" class="menu-item">Riwayat Perawatan</a>
     <div style="margin-top: 10px;"></div>
-    <a href="<?= base_url('payment'); ?>" class="menu-item">Pembayaran</a>
+    <a href="<?= base_url('payment/list'); ?>" class="menu-item">Pembayaran</a>
     <a href="<?= base_url('akun'); ?>" class="menu-item">Akun</a>
     <a href="<?= base_url('auth/logout'); ?>" class="logout-btn">Logout</a>
 </div>

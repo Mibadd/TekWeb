@@ -354,9 +354,24 @@
         #modalEdit button[type="submit"]:hover {
             background: #c0392b;
         }
-    </style>
+        .btn-logout {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s;
+}
 
+        .btn-logout:hover {
+            background-color: #b62828;
+        }
+    </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -371,7 +386,7 @@
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-            <a href="<?= base_url('auth/logout'); ?>" class="menu-item">Logout</a>
+            <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
         </div>
     </div>
 
@@ -387,238 +402,140 @@
             <form method="GET" action="<?= base_url('admin/sukucadang') ?>" class="filter-container">
                 <div class="filter-group">
                     <label for="filterKategori">Filter Kategori:</label>
-                    <select id="filterKategori" name="filter_kategori">
-                        <option value="">Semua</option>
-                        <option value="Rantai" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Rantai') ? 'selected' : '' ?>>Rantai</option>
-                        <option value="Gear" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Gear') ? 'selected' : '' ?>>Gear</option>
-                        <option value="Rem" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Rem') ? 'selected' : '' ?>>Rem</option>
-                        <option value="Ban" <?= (isset($_GET['filter_kategori']) && $_GET['filter_kategori'] === 'Ban') ? 'selected' : '' ?>>Ban</option>
+                    <select name="kategori" id="filterKategori">
+                        <option value="" <?= (isset($_GET['kategori']) && $_GET['kategori'] == '') ? 'selected' : '' ?>>Semua</option>
+                        <option value="mesin" <?= (isset($_GET['kategori']) && $_GET['kategori'] == 'mesin') ? 'selected' : '' ?>>Mesin</option>
+                        <option value="body" <?= (isset($_GET['kategori']) && $_GET['kategori'] == 'body') ? 'selected' : '' ?>>Body</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="status">Status:</label>
-                    <select id="status" class="form-select">
-                        <option value="">Semua Status</option>
-                        <option value="tersedia">Tersedia</option>
-                        <option value="menipis">Stok Menipis</option>
-                        <option value="habis">Habis</option>
-                    </select>
+                    <button type="submit" class="filter-button">Terapkan</button>
                 </div>
-                <div class="filter-group">
-                    <label for="filterNama">Cari Nama:</label>
-                    <input type="text" id="filterNama" name="filter_nama" value="<?= isset($_GET['filter_nama']) ? htmlspecialchars($_GET['filter_nama']) : '' ?>" placeholder="Cari berdasarkan nama suku cadang" />
-                </div>
-                <button type="submit" class="filter-button">Cari</button>
             </form>
 
-            <!-- Table Data -->
+            <!-- Tabel Data Suku Cadang -->
             <table class="sukucadang-table">
-    <thead>
-        <tr>
-            <th>Kode</th>
-            <th>Nama</th>
-            <th>Kategori</th>
-            <th>Stok</th>
-            <th>Harga</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($sukucadang)): ?>
-            <?php foreach ($sukucadang as $item): ?>
-                <tr>
-                    <td><?= htmlspecialchars($item['id']) ?></td>  <!-- Kode -->
-                    <td><?= htmlspecialchars($item['nama']) ?></td>  <!-- Nama -->
-                    <td><?= htmlspecialchars($item['kategori']) ?></td>  <!-- Kategori -->
-                    <td><?= (int)$item['stok'] ?></td>  <!-- Stok -->
-                    <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>  <!-- Harga -->
-                    <td>
-                        <?php
-                            $stok = (int)$item['stok'];
-                            if ($stok == 0) {
-                                echo '<span class="status-habis">Habis</span>';
-                            } elseif ($stok <= 5) {
-                                echo '<span class="status-menipis">Menipis</span>';
-                            } else {
-                                echo '<span class="status-tersedia">Tersedia</span>';
-                            }
-                        ?>
-                    </td>
-                    <td class="action-buttons">
-                        <button class="action-edit" type="button" onclick="editSukuCadang(<?= $item['id'] ?>)">Edit</button>
-                        <button class="action-delete" type="button" onclick="deleteSukuCadang(<?= $item['id'] ?>)">Hapus</button>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-        <?php else: ?>
-            <tr><td colspan="7" style="text-align:center; padding:20px;">Data tidak ditemukan.</td></tr>
-        <?php endif ?>
-    </tbody>
-</table>
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Stok</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($sukucadang as $item): ?>
+                        <tr>
+                            <td><?= esc($item['nama']) ?></td>
+                            <td><?= esc($item['kategori']) ?></td>
+                            <td><?= esc($item['stok']) ?></td>
+                            <td class="<?= $item['stok'] == 0 ? 'status-habis' : ($item['stok'] < 5 ? 'status-menipis' : 'status-tersedia') ?>">
+                                <?= $item['stok'] == 0 ? 'Habis' : ($item['stok'] < 5 ? 'Menipis' : 'Tersedia') ?>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-edit" onclick="openEditModal(<?= $item['id'] ?>)">Edit</button>
+                                    <form action="<?= base_url('admin/sukucadang/hapus/' . $item['id']) ?>" method="post" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="action-delete">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Modal Tambah Suku Cadang -->
-    <div id="modalTambah">
-        <div class="modal-content">
-            <h3>Tambah Suku Cadang</h3>
-<form action="<?= base_url('admin/sukucadang/tambah') ?>" method="POST">
-    <label for="kode">Kode:</label>
-    <input type="text" id="kode" name="kode" required />
-
-    <label for="namaSukuCadang">Nama Suku Cadang:</label>
-    <input type="text" id="namaSukuCadang" name="nama_sukucadang" required />
-
-    <label for="kategoriModal">Kategori:</label>
-    <select id="kategoriModal" name="kategori" required>
-        <option value="">Pilih kategori</option>
-        <option value="Rantai">Rantai</option>
-        <option value="Gear">Gear</option>
-        <option value="Rem">Rem</option>
-        <option value="Ban">Ban</option>
-    </select>
-
-    <label for="stok">Stok:</label>
-    <input type="number" id="stok" name="stok" min="0" required />
-
-    <label for="harga">Harga (Rp):</label>
-    <input type="number" id="harga" name="harga" min="0" required />
-
-    <div class="btn-group">
-        <button type="button" id="btnCloseModal">Batal</button>
-        <button type="submit">Simpan</button>
-    </div>
-</form>
-
-
-        </div>
-    </div>
-
-    <!-- Modal Edit Suku Cadang -->
-<div id="modalEdit" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-     background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+    <!-- Modal Tambah -->
+<div id="modalTambah" class="modal">
     <div class="modal-content">
-        <h3>Edit Suku Cadang</h3>
-        <form id="formEdit" action="<?= base_url('admin/sukucadang/edit') ?>" method="POST">
-            <input type="hidden" id="editId" name="id">
-            
-            <label for="editKode">Kode:</label>
-            <input type="text" id="editKode" name="kode" required />
+        <h3>Tambah Suku Cadang</h3>
+        <form action="<?= base_url('admin/sukucadang/tambah') ?>" method="post">
+            <?= csrf_field() ?>
 
-            <label for="editNamaSukuCadang">Nama Suku Cadang:</label>
-            <input type="text" id="editNamaSukuCadang" name="nama_sukucadang" required />
+            <label for="nama">Nama:</label>
+            <input type="text" name="nama" id="nama" required>
 
-            <label for="editKategoriModal">Kategori:</label>
-            <select id="editKategoriModal" name="kategori" required>
-                <option value="">Pilih kategori</option>
-                <option value="Rantai">Rantai</option>
-                <option value="Gear">Gear</option>
-                <option value="Rem">Rem</option>
-                <option value="Ban">Ban</option>
-            </select>
+            <label for="kategori">Kategori:</label>
+            <input type="text" name="kategori" id="kategori" required>
 
-            <label for="editStok">Stok:</label>
-            <input type="number" id="editStok" name="stok" min="0" required />
+            <label for="stok">Stok:</label>
+            <input type="number" name="stok" id="stok" required min="0">
 
-            <label for="editHarga">Harga (Rp):</label>
-            <input type="number" id="editHarga" name="harga" min="0" required />
+            <label for="harga">Harga:</label>
+            <input type="number" name="harga" id="harga" required min="0">
 
             <div class="btn-group">
-                <button type="button" id="btnCloseEditModal">Batal</button>
+                <button type="button" id="btnCloseModal">Batal</button>
                 <button type="submit">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Tambahkan notifikasi untuk menampilkan pesan -->
-<?php if (session()->getFlashdata('success')) : ?>
-<div id="notification" style="position:fixed; top:20px; right:20px; background:#4CAF50; color:white; 
-     padding:15px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.1); z-index:9999;">
-    <?= session()->getFlashdata('success') ?>
-</div>
-<script>
-    setTimeout(function() {
-        document.getElementById('notification').style.display = 'none';
-    }, 3000);
-</script>
-<?php endif; ?>
 
-<?php if (session()->getFlashdata('error')) : ?>
-<div id="notification" style="position:fixed; top:20px; right:20px; background:#F44336; color:white; 
-     padding:15px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.1); z-index:9999;">
-    <?= session()->getFlashdata('error') ?>
-</div>
-<script>
-    setTimeout(function() {
-        document.getElementById('notification').style.display = 'none';
-    }, 3000);
-</script>
-<?php endif; ?>
+    <!-- Modal Edit (Kosong, akan diisi JS/Controller) -->
+    <div id="modalEdit">
+        <div class="modal-content">
+            <h3>Edit Suku Cadang</h3>
+            <form action="<?= base_url('admin/sukucadang/edit') ?>" method="post">
+                <?= csrf_field() ?>
+                <input type="hidden" name="id" id="edit_id">
+                <label for="edit_kode">Kode:</label>
+                <input type="text" name="kode" id="edit_kode" required>
 
-<script>
-    const modalTambah = document.getElementById('modalTambah');
-    const modalEdit = document.getElementById('modalEdit');
-    const btnOpenModal = document.getElementById('btnOpenModal');
-    const btnCloseModal = document.getElementById('btnCloseModal');
-    const btnCloseEditModal = document.getElementById('btnCloseEditModal');
+                <label for="edit_nama">Nama:</label>
+                <input type="text" name="nama_sukucadang" id="edit_nama" required>
 
-    btnOpenModal.addEventListener('click', () => {
-        modalTambah.style.display = 'flex';
-    });
+                <label for="edit_kategori">Kategori:</label>
+                <input type="text" name="kategori" id="edit_kategori" required>
 
-    btnCloseModal.addEventListener('click', () => {
-        modalTambah.style.display = 'none';
-    });
-    
-    btnCloseEditModal.addEventListener('click', () => {
-        modalEdit.style.display = 'none';
-    });
+                <label for="edit_stok">Stok:</label>
+                <input type="number" name="stok" id="edit_stok" required min="0">
 
-    window.addEventListener('click', (e) => {
-        if (e.target === modalTambah) {
-            modalTambah.style.display = 'none';
-        }
-        if (e.target === modalEdit) {
-            modalEdit.style.display = 'none';
-        }
-    });
+                <div class="btn-group">
+                    <button type="button" id="btnCloseEditModal">Batal</button>
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    function editSukuCadang(id) {
-        // Tampilkan modal edit
-        modalEdit.style.display = 'flex';
-        
-        // Ambil data dengan AJAX
-        fetch(`<?= base_url('admin/sukucadang/getById') ?>/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert('Error: ' + data.error);
-                    return;
-                }
-                
-                // Isi form dengan data yang diambil
-                document.getElementById('editId').value = data.id;
-                document.getElementById('editKode').value = data.kode;
-                document.getElementById('editNamaSukuCadang').value = data.nama;
-                document.getElementById('editKategoriModal').value = data.kategori;
-                document.getElementById('editStok').value = data.stok;
-                document.getElementById('editHarga').value = data.harga;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengambil data.');
-            });
+    <!-- Script Modal -->
+    <script>
+        const modalTambah = document.getElementById("modalTambah");
+        const modalEdit = document.getElementById("modalEdit");
+
+        document.getElementById("btnOpenModal").addEventListener("click", () => {
+            modalTambah.style.display = "flex";
+        });
+
+        document.getElementById("btnCloseModal").addEventListener("click", () => {
+            modalTambah.style.display = "none";
+        });
+
+        document.getElementById("btnCloseEditModal").addEventListener("click", () => {
+            modalEdit.style.display = "none";
+        });
+
+        function openEditModal(id) {
+    const data = <?= json_encode($sukucadang) ?>;
+    const item = data.find(i => i.id == id);
+
+    if (item) {
+        document.getElementById("edit_id").value = item.id;
+        document.getElementById("edit_kode").value = item.kode;
+        document.getElementById("edit_nama").value = item.nama;
+        document.getElementById("edit_kategori").value = item.kategori;
+        document.getElementById("edit_stok").value = item.stok;
+
+        modalEdit.style.display = "flex";
     }
+}
 
-    function deleteSukuCadang(id) {
-        if (confirm('Yakin ingin menghapus suku cadang ini?')) {
-            // Redirect ke route hapus
-            window.location.href = `<?= base_url('admin/sukucadang/hapus') ?>/${id}`;
-        }
-    }
-</script>
-    
+    </script>
 </body>
 </html>

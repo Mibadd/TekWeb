@@ -1,298 +1,280 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin GOODBIKE</title>
-    <style>
-        /* Reset dan font */
-    * {
+<?= $this->extend('templates/main_template'); ?>
+
+<?= $this->section('content'); ?>
+
+<!-- Impor Font Awesome untuk ikon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --light-gray: #f0f3f5;
+        --dark-gray: #475569;
+        --text-color: #333;
+        --card-bg: #ffffff;
+    }
+
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+
+    .profile-header-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid var(--primary-color);
+        padding: 5px;
+        background: white;
+    }
+
+    .profile-info h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 0 0 0.25rem 0;
+    }
+
+    .profile-info p {
+        font-size: 1rem;
+        color: var(--dark-gray);
         margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    body {
-        display: flex;
-        background-color: #f5f5f5;
-        height: 100vh;
-        overflow: hidden;
+    .vehicle-info {
+        margin-left: auto;
+        text-align: right;
+        padding-left: 1.5rem;
+        border-left: 1px solid var(--light-gray);
+    }
+    
+    .vehicle-info .title {
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
     }
 
-    .sidebar {
-        width: 215px;
-        height: 100vh;
-        background-color: white;
-        border-right: 1px solid #e0e0e0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .logo {
-        padding: 20px 0;
-        border-bottom: 1px solid #e0e0e0;
-        text-align: center;
-    }
-
-    .logo h1 {
-        color: #e74c3c;
-        font-size: 20px;
+    .vehicle-info .value {
+        font-size: 1.25rem;
         font-weight: 600;
+        color: var(--primary-color);
     }
 
-    .menu {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+    .service-summary-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
     }
 
-    .menu-item {
-        padding: 15px 20px;
-        cursor: pointer;
-        color: #333;
-        transition: background-color 0.2s;
-        border-bottom: 1px solid #f5f5f5;
-        text-decoration: none;
-        display: block;
-    }
-
-    .menu-item:hover,
-    .menu-item.active {
-        background-color: #f8f9fa;
-    }
-
-    .logout {
-        border-top: 1px solid #e0e0e0;
-        padding: 15px 20px;
-        cursor: pointer;
-        color: #333;
-    }
-
-    .content {
-        flex: 1;
-        padding: 20px 30px; /* sedikit dikurangi padding vertikal */
-        background-color: #f5f5f5;
-        height: 100vh;
-        overflow-y: auto; /* agar scroll jika konten melebihi */
-        display: flex;
-        flex-direction: column;
-    }
-
-    .content-header {
-        margin-bottom: 20px;
-        flex-shrink: 0;
-    }
-
-    .content-header h2 {
-        font-size: 22px;
-        color: #333;
-        font-weight: 500;
-    }
-
-    .stats-container {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 15px;
-        flex-shrink: 0;
-    }
-
-    .stat-card {
-        background-color: white;
-        border-radius: 8px;
-        padding: 15px 20px;
-        flex: 1;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .stat-card h3 {
-        font-size: 13px;
-        color: #555;
-        margin-bottom: 8px;
-        font-weight: 500;
-    }
-
-    .stat-card .value {
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .stat-card .value.red {
-        color: #e74c3c;
-    }
-
-    .stat-card .value.yellow {
-        color: #f39c12;
-    }
-
-    .stat-card .value.green {
-        color: #27ae60;
-    }
-
-    .charts-container {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 15px;
-        flex-shrink: 0;
-        height: 250px; /* batasi tinggi container grafik */
-    }
-
-    .chart-card {
-        background-color: white;
-        border-radius: 8px;
-        padding: 15px 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        flex: 1;
-        min-height: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #999;
-    }
-
-    .chart-card canvas {
-        max-height: 200px;
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    .activities-card {
-        background-color: white;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        flex-shrink: 0;
-    }
-
-    .activities-header {
-        font-size: 18px;
-        color: #333;
-        margin-bottom: 20px;
-        font-weight: 500;
-    }
-
-    .activity-item {
+    .summary-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
-        color: #555;
+        gap: 1.5rem;
     }
-
-    .activity-icon {
-        width: 24px;
-        height: 24px;
-        background-color: #e9ecef;
+    
+    .summary-card .icon {
+        font-size: 2rem;
+        padding: 1rem;
         border-radius: 50%;
         display: flex;
-        justify-content: center;
         align-items: center;
-        margin-right: 10px;
-        color: #6c757d;
-        font-size: 12px;
-        flex-shrink: 0;
+        justify-content: center;
+    }
+    
+    .icon.last-service {
+        background-color: #e8f5e9; /* Light green */
+        color: var(--secondary-color);
     }
 
-    .activity-time {
-        font-weight: bold;
-        margin-right: 5px;
-        color: #555;
-        flex-shrink: 0;
-        min-width: 55px;
+    .icon.next-service {
+        background-color: #e3f2fd; /* Light blue */
+        color: var(--primary-color);
     }
-    </style>
-</head>
-<body>
-    <div class="sidebar">
-        <div class="logo">
-            <h1>Admin GOODBIKE</h1>
+    
+    .summary-card .details .title {
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+    }
+
+    .summary-card .details .date {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .service-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .list-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .list-card .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--light-gray);
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    
+    .list-card .section-link {
+        font-size: 0.85rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .list-card ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .list-card li {
+        padding: 0.75rem 0.25rem;
+        color: var(--dark-gray);
+        border-bottom: 1px solid var(--light-gray);
+        display: flex;
+        align-items: center;
+    }
+    
+    .list-card li:last-child {
+        border-bottom: none;
+    }
+    
+    .list-card li .list-icon {
+        margin-right: 1rem;
+        font-size: 1rem;
+    }
+
+    .list-icon.history-icon { color: var(--secondary-color); }
+    .list-icon.schedule-icon { color: var(--primary-color); }
+    
+    @media (max-width: 992px) {
+        .profile-header-card {
+            flex-direction: column;
+            text-align: center;
+        }
+        .vehicle-info {
+            margin-left: 0;
+            text-align: center;
+            border-left: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .service-summary-grid, .service-grid {
+            grid-template-columns: 1fr;
+        }
+        .profile-img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Kartu Profil Header -->
+    <div class="profile-header-card">
+        <img src="<?= base_url('image/' . (!empty($user['photo']) ? $user['photo'] : 'nmax.jpg')); ?>" alt="Foto Profil" class="profile-img">
+        <div class="profile-info">
+            <h1><?= esc($user['name']); ?></h1>
+            <p>Selamat datang di dasbor kendaraan Anda.</p>
         </div>
-        <div class="menu">
-            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
-            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
-            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
-            <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
-        </div>
-        <div class="logout">
-            <a href="<?= base_url('auth/logout'); ?>">Logout</a>
+        <div class="vehicle-info">
+            <div class="title"><i class="fas fa-motorcycle"></i> Kendaraan Anda</div>
+            <div class="value"><?= esc($user['vehicle'] ?? 'Belum diatur'); ?></div>
         </div>
     </div>
 
-    <div class="content">
-        <div class="content-header">
-            <h2>Dashboard</h2>
-        </div>
-
-        <div class="stats-container">
-            <div class="stat-card">
-                <h3>Total Servis</h3>
-                <div class="value red"><?= $totalServices ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Antrean Hari Ini</h3>
-                <div class="value yellow"><?= $pendingRequests ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Pendapatan</h3>
-                <div class="value green">Rp <?= number_format($income, 0, ',', '.') ?></div>
+    <!-- Ringkasan Jadwal Service -->
+    <div class="service-summary-grid">
+        <div class="summary-card">
+            <div class="icon last-service"><i class="fas fa-history"></i></div>
+            <div class="details">
+                <div class="title">Servis Terakhir</div>
+                <div class="date"><?= !empty($history) ? date('d F Y', strtotime($history[0]['tanggal'])) : 'Belum ada data'; ?></div>
             </div>
         </div>
-
-        <div class="charts-container">
-            <div class="chart-card">
-                <canvas id="grafikBulanan" width="400" height="200"></canvas>
-
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <script>
-                    const ctx = document.getElementById('grafikBulanan').getContext('2d');
-                    const labels = <?= json_encode(array_column($chartData, 'bulan')) ?>;
-                    const data = <?= json_encode(array_column($chartData, 'jumlah')) ?>;
-
-                    const myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Jumlah Servis per Bulan',
-                                data: data,
-                                backgroundColor: '#42A5F5'
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: { display: false }
-                            },
-                            scales: {
-                                y: { beginAtZero: true }
-                            }
-                        }
-                    });
-                </script>
-            </div>
-            <div class="chart-card">
-                [ Grafik Suku Cadang / Pendapatan ]
-            </div>
-        </div>
-
-        <div class="activities-card">
-            <div class="activities-header">Aktivitas Terakhir</div>
-            <div class="activity-item">
-                <div class="activity-icon">●</div>
-                <span class="activity-time">[08:15]</span>
-                <span>Admin menambahkan data kendaraan baru.</span>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">●</div>
-                <span class="activity-time">[08:40]</span>
-                <span>Stok oli berkurang - notifikasi dikirim.</span>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">●</div>
-                <span class="activity-time">[09:00]</span>
-                <span>Pengguna baru ditambahkan oleh Admin2.</span>
+        <div class="summary-card">
+            <div class="icon next-service"><i class="fas fa-calendar-alt"></i></div>
+            <div class="details">
+                <div class="title">Servis Selanjutnya</div>
+                <div class="date"><?= !empty($schedules) ? date('d F Y', strtotime($schedules[0]['tanggal'])) : 'Belum ada jadwal'; ?></div>
             </div>
         </div>
     </div>
-</body>
-</html>
+
+    <!-- Daftar Riwayat dan Jadwal -->
+    <div class="service-grid">
+        <div class="list-card">
+            <div class="section-title">
+                <span>Riwayat Perawatan</span>
+                <a href="<?= base_url('riwayatperawatan'); ?>" class="section-link">Lihat Semua</a>
+            </div>
+            <ul>
+                <?php if (!empty($history)): ?>
+                    <?php foreach ($history as $item): ?>
+                        <li>
+                            <i class="fas fa-check-circle list-icon history-icon"></i>
+                            <?= esc(date('d M Y', strtotime($item['tanggal']))) ?> - <?= esc($item['jenis_servis']) ?>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>Tidak ada riwayat perawatan.</li>
+                <?php endif; ?>
+            </ul>
+        </div>
+        
+        <div class="list-card">
+            <div class="section-title">
+                <span>Jadwal Akan Datang</span>
+                <a href="<?= base_url('jadwalservice'); ?>" class="section-link">Lihat Semua</a>
+            </div>
+            <ul>
+                <?php if (!empty($schedules)): ?>
+                    <?php foreach ($schedules as $schedule): ?>
+                        <li>
+                            <i class="fas fa-clock list-icon schedule-icon"></i>
+                            <?= esc(date('d M Y', strtotime($schedule['tanggal']))) ?> - <?= esc($schedule['jenis_servis']) ?>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>Tidak ada jadwal baru.</li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>

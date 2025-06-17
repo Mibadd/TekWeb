@@ -248,18 +248,35 @@
         padding-top: 15px;
         border-top: 1px solid #e0e0e0;
     }
+    .btn-logout {
+        background-color: #d32f2f;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-logout:hover {
+        background-color: #b62828;
+    }
 
     /* Responsive */
     @media (max-width: 768px) {
-        .sidebar {
-            display: none;
-        }
+    .sidebar {
+        position: fixed;
+        width: 180px;
+        z-index: 10;
+    }
 
-        .main-content {
-            margin-left: 0;
-            width: 100%;
-            padding: 20px 15px;
-        }
+    .main-content {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+        padding: 15px;
+    }
 
         .report-container {
             padding: 20px 20px;
@@ -290,6 +307,7 @@
     }
 </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -299,12 +317,12 @@
         <div class="menu">
             <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
             <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
-            <a href="<?= base_url('admin/datakendaraan') ?>" class="menu-item">Data Kendaraan</a>
+            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
             <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
             <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
         <div class="logout">
-            Logout
+            <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
         </div>
     </div>
 
@@ -320,17 +338,18 @@
                 ?>
 
                 <div class="export-buttons">
-                    <a href="<?= base_url('laporan/export-pdf?' . $query) ?>" class="btn-export-pdf">Export PDF</a>
-                    <a href="<?= base_url('laporan/export-excel?' . $query) ?>" class="btn-export-excel">Export Excel</a>
-                </div>
+    <a href="<?= base_url('admin/laporan/export-pdf?' . $query) ?>" class="btn-export-pdf">Export PDF</a>
+    <a href="<?= base_url('admin/laporan/export-excel?' . $query) ?>" class="btn-export-excel">Export Excel</a>
+        </div>
+
             </div>
 
             <div class="filter-container">
-                <form action="<?= site_url('laporan/filter') ?>" method="GET"> 
+                <form action="<?= site_url('admin/laporan/filter') ?>" method="GET">
                     <label>Dari Tanggal:</label>
-                    <input type="date" name="start" value="<?= isset($_GET['start']) ? esc($_GET['start']) : '' ?>">
+                    <input type="date" id="startDate" name="start" value="<?= esc($start) ?>">
                     <label>Sampai Tanggal:</label>
-                    <input type="date" name="end" value="<?= isset($_GET['end']) ? esc($_GET['end']) : '' ?>">
+                    <input type="date" id="endDate" name="end" value="<?= esc($end) ?>">
                     <button type="submit">Filter</button>
                 </form>
             </div>
@@ -349,7 +368,7 @@
                     <?php if (!empty($laporan) && is_array($laporan)): ?>
                         <?php foreach ($laporan as $item): ?>
                             <tr>
-                                <td><?= htmlspecialchars($item['tanggal']) ?></td>
+                                <td><?= date('Y-m-d', strtotime($item['tanggal'])) ?></td>
                                 <td><?= htmlspecialchars($item['nama_pelanggan']) ?></td>
                                 <td><?= htmlspecialchars($item['kendaraan']) ?></td>
                                 <td><?= htmlspecialchars($item['jenis_servis']) ?></td>
@@ -373,32 +392,47 @@
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() { 
+        //Artinya: tunggu sampai halaman selesai dimuat, lalu jalankan kode di dalamnya.Ini penting agar semua elemen HTML seperti input tanggal sudah siap diproses.
         const today = new Date();
+        //Membuat objek Date yang berisi waktu saat ini (sekarang).
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        // today.getFullYear() → misalnya 2025
+
+        //today.getMonth() → misalnya 5 (karena bulan dimulai dari 0 = Januari)
+
+        //1 → artinya tanggal 1
+
+        //Jadi ini akan menghasilkan 2025-06-01
+
         const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        // getMonth() + 1 → pindah ke bulan berikutnya
+        // 0 → artinya satu hari sebelum tanggal 1 bulan berikutnya, yaitu hari terakhir bulan sekarang
+        // Jadi kalau sekarang Juni, hasilnya 2025-06-30
 
         const formatDate = (date) => {
-            const y = date.getFullYear();
+            const y = date.getFullYear(); //ambil tahun
             const m = String(date.getMonth() + 1).padStart(2, '0');
             const d = String(date.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+            //bulan dimulai dari 0, jadi ditambah 1
+            // .padStart(2, '0') → kalau hanya 1 digit, ditambah nol di depan. Misalnya 6 jadi 06
+            return '${y}-${m}-${d}'; //mengembalikan string seperti2025-06-01
         };
 
         document.getElementById('startDate').value = formatDate(firstDay);
         document.getElementById('endDate').value = formatDate(lastDay);
+        // Mengatur nilai input tanggal (yang punya id="startDate" dan id="endDate") secara otomatis saat halaman dimuat.
+        // Jadi user langsung dapat rentang tanggal 1 Juni – 30 Juni (misalnya), tanpa memilih manual.
     });
 
     document.getElementById('filterBtn').addEventListener('click', function() {
+        // Setelah fungsi awal selesai, ini menambahkan event listener ke tombol dengan id="filterBtn" agar menjalankan fungsi saat diklik.
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
+        // Mengambil isi input dari form (tanggal awal dan akhir) saat tombol diklik.
 
-        alert(`Filtering data dari ${startDate} sampai ${endDate}`);
-        // TODO: Tambahkan logika AJAX atau form submit untuk filter data sebenarnya
+        alert(Filtering data dari ${startDate} sampai ${endDate});
     });
-
-    // Jika ingin menambah event untuk tombol export (saat menggunakan tombol bukan <a>)
-    // Karena tombol export ini menggunakan <a>, tidak perlu event tambahan.
 </script>
 </body>
 </html>
