@@ -1,280 +1,191 @@
-<?= $this->extend('templates/main_template'); ?>
-
-<?= $this->section('content'); ?>
-
-<!-- Impor Font Awesome untuk ikon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-    :root {
-        --primary-color: #3498db;
-        --secondary-color: #2ecc71;
-        --danger-color: #e74c3c;
-        --light-gray: #f0f3f5;
-        --dark-gray: #475569;
-        --text-color: #333;
-        --card-bg: #ffffff;
-    }
-
-    .content-wrapper {
-        padding: 1.5rem;
-    }
-
-    .profile-header-card {
-        background: var(--card-bg);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .profile-img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 5px solid var(--primary-color);
-        padding: 5px;
-        background: white;
-    }
-
-    .profile-info h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-color);
-        margin: 0 0 0.25rem 0;
-    }
-
-    .profile-info p {
-        font-size: 1rem;
-        color: var(--dark-gray);
-        margin: 0;
-    }
-
-    .vehicle-info {
-        margin-left: auto;
-        text-align: right;
-        padding-left: 1.5rem;
-        border-left: 1px solid var(--light-gray);
-    }
-    
-    .vehicle-info .title {
-        color: var(--dark-gray);
-        font-size: 0.9rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .vehicle-info .value {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-
-    .service-summary-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .summary-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-    }
-    
-    .summary-card .icon {
-        font-size: 2rem;
-        padding: 1rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .icon.last-service {
-        background-color: #e8f5e9; /* Light green */
-        color: var(--secondary-color);
-    }
-
-    .icon.next-service {
-        background-color: #e3f2fd; /* Light blue */
-        color: var(--primary-color);
-    }
-    
-    .summary-card .details .title {
-        color: var(--dark-gray);
-        font-size: 0.9rem;
-    }
-
-    .summary-card .details .date {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--text-color);
-    }
-
-    .service-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .list-card {
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    
-    .list-card .section-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--light-gray);
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--text-color);
-    }
-    
-    .list-card .section-link {
-        font-size: 0.85rem;
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-    }
-    
-    .list-card ul {
-        list-style-type: none;
-        padding-left: 0;
-        margin: 0;
-    }
-
-    .list-card li {
-        padding: 0.75rem 0.25rem;
-        color: var(--dark-gray);
-        border-bottom: 1px solid var(--light-gray);
-        display: flex;
-        align-items: center;
-    }
-    
-    .list-card li:last-child {
-        border-bottom: none;
-    }
-    
-    .list-card li .list-icon {
-        margin-right: 1rem;
-        font-size: 1rem;
-    }
-
-    .list-icon.history-icon { color: var(--secondary-color); }
-    .list-icon.schedule-icon { color: var(--primary-color); }
-    
-    @media (max-width: 992px) {
-        .profile-header-card {
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - GOODBIKE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --sidebar-width: 215px;
+            --primary-color: #e74c3c;
+            --secondary-color: #34495e;
+            --background-color: #f5f5f7;
+            --card-bg: #ffffff;
+            --text-dark: #333;
+            --text-light: #555;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; background-color: var(--background-color); }
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--card-bg);
+            border-right: 1px solid #e0e0e0;
+            display: flex;
             flex-direction: column;
-            text-align: center;
+            position: fixed;
         }
-        .vehicle-info {
-            margin-left: 0;
-            text-align: center;
-            border-left: none;
-            padding-left: 0;
-            margin-top: 1rem;
+        .logo { padding: 20px 0; border-bottom: 1px solid #e0e0e0; text-align: center; }
+        .logo h1 { color: var(--primary-color); font-size: 20px; font-weight: 600; }
+        .menu { flex: 1; }
+        .menu-item { padding: 15px 20px; color: var(--text-dark); text-decoration: none; display: block; border-bottom: 1px solid #f5f5f5; transition: background-color 0.2s; }
+        .menu-item:hover, .menu-item.active { background-color: #f8f9fa; }
+        .logout { padding: 15px 20px; }
+        .btn-logout { background-color: #d32f2f; color: white; padding: 10px 20px; border-radius: 5px; display: block; text-align: center; font-weight: 600; text-decoration: none; transition: background-color 0.3s; }
+        .btn-logout:hover { background-color: #b62828; }
+        .content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            height: 100vh;
+            overflow-y: auto;
+            padding: 25px;
         }
-    }
-    
-    @media (max-width: 768px) {
-        .service-summary-grid, .service-grid {
-            grid-template-columns: 1fr;
-        }
-        .profile-img {
-            width: 100px;
-            height: 100px;
-        }
-    }
-</style>
+        .content-header { margin-bottom: 25px; }
+        .content-header h2 { font-size: 24px; color: var(--text-dark); font-weight: 600; }
+        .content-header p { color: var(--text-light); }
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .stat-card { background-color: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+        .stat-card h3 { font-size: 14px; color: var(--text-light); margin-bottom: 8px; font-weight: 500; }
+        .stat-card .value { font-size: 24px; font-weight: bold; }
+        .stat-card .value.red { color: #e74c3c; }
+        .stat-card .value.yellow { color: #f39c12; }
+        .stat-card .value.green { color: #27ae60; }
+        .charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .chart-card { background-color: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .chart-card h4 { font-size: 16px; margin-bottom: 15px; color: var(--text-dark); }
+        .activities-card { background-color: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .activity-item { display: flex; align-items: center; margin-bottom: 15px; color: var(--text-light); gap: 10px; }
+        .activity-item:last-child { margin-bottom: 0; }
+        .text-danger { color: #dc3545 !important; }
+        .text-warning { color: #fd7e14 !important; }
 
-<div class="content-wrapper">
-    <!-- Kartu Profil Header -->
-    <div class="profile-header-card">
-        <img src="<?= base_url('image/' . (!empty($user['photo']) ? $user['photo'] : 'nmax.jpg')); ?>" alt="Foto Profil" class="profile-img">
-        <div class="profile-info">
-            <h1><?= esc($user['name']); ?></h1>
-            <p>Selamat datang di dasbor kendaraan Anda.</p>
+        @media (max-width: 992px) {
+            .charts-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { position: static; width: 100%; height: auto; }
+            .content { margin-left: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo"><h1>Admin GOODBIKE</h1></div>
+        <div class="menu">
+            <a href="<?= base_url('admin/dashboard') ?>" class="menu-item active">Dashboard</a>
+            <a href="<?= base_url('admin/manajemenpengguna') ?>" class="menu-item">Manajemen Pengguna</a>
+            <a href="<?= base_url('admin/manajemenjadwal') ?>" class="menu-item">Manajemen Jadwal</a>
+            <a href="<?= base_url('admin/sukucadang') ?>" class="menu-item">Suku Cadang</a>
+            <a href="<?= base_url('admin/laporan') ?>" class="menu-item">Laporan</a>
         </div>
-        <div class="vehicle-info">
-            <div class="title"><i class="fas fa-motorcycle"></i> Kendaraan Anda</div>
-            <div class="value"><?= esc($user['vehicle'] ?? 'Belum diatur'); ?></div>
+        <div class="logout">
+            <a href="<?= base_url('auth/logout'); ?>" class="btn-logout">Logout</a>
         </div>
     </div>
 
-    <!-- Ringkasan Jadwal Service -->
-    <div class="service-summary-grid">
-        <div class="summary-card">
-            <div class="icon last-service"><i class="fas fa-history"></i></div>
-            <div class="details">
-                <div class="title">Servis Terakhir</div>
-                <div class="date"><?= !empty($history) ? date('d F Y', strtotime($history[0]['tanggal'])) : 'Belum ada data'; ?></div>
-            </div>
+    <div class="content">
+        <div class="content-header">
+            <h2>Admin Dashboard</h2>
         </div>
-        <div class="summary-card">
-            <div class="icon next-service"><i class="fas fa-calendar-alt"></i></div>
-            <div class="details">
-                <div class="title">Servis Selanjutnya</div>
-                <div class="date"><?= !empty($schedules) ? date('d F Y', strtotime($schedules[0]['tanggal'])) : 'Belum ada jadwal'; ?></div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Daftar Riwayat dan Jadwal -->
-    <div class="service-grid">
-        <div class="list-card">
-            <div class="section-title">
-                <span>Riwayat Perawatan</span>
-                <a href="<?= base_url('riwayatperawatan'); ?>" class="section-link">Lihat Semua</a>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Servis</h3>
+                <div class="value red"><?= $totalServices ?></div>
             </div>
-            <ul>
-                <?php if (!empty($history)): ?>
-                    <?php foreach ($history as $item): ?>
-                        <li>
-                            <i class="fas fa-check-circle list-icon history-icon"></i>
-                            <?= esc(date('d M Y', strtotime($item['tanggal']))) ?> - <?= esc($item['jenis_servis']) ?>
-                        </li>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <li>Tidak ada riwayat perawatan.</li>
-                <?php endif; ?>
-            </ul>
+            <div class="stat-card">
+                <h3>Antrean Hari Ini</h3>
+                <div class="value yellow"><?= $pendingRequests ?></div>
+            </div>
+            <div class="stat-card">
+                <h3>Pendapatan (All Time)</h3>
+                <div class="value green">Rp <?= number_format($income, 0, ',', '.') ?></div>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <h4>Grafik Servis Bulanan</h4>
+                <canvas id="grafikBulanan"></canvas>
+            </div>
+            <div class="chart-card">
+                <h4>Grafik Pendapatan Bulanan</h4>
+                <canvas id="grafikPendapatan"></canvas>
+            </div>
         </div>
         
-        <div class="list-card">
-            <div class="section-title">
-                <span>Jadwal Akan Datang</span>
-                <a href="<?= base_url('jadwalservice'); ?>" class="section-link">Lihat Semua</a>
-            </div>
-            <ul>
-                <?php if (!empty($schedules)): ?>
-                    <?php foreach ($schedules as $schedule): ?>
-                        <li>
-                            <i class="fas fa-clock list-icon schedule-icon"></i>
-                            <?= esc(date('d M Y', strtotime($schedule['tanggal']))) ?> - <?= esc($schedule['jenis_servis']) ?>
-                        </li>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <li>Tidak ada jadwal baru.</li>
-                <?php endif; ?>
-            </ul>
+        <div class="activities-card">
+            <h4>Notifikasi Stok Suku Cadang Rendah</h4>
+            <?php if (!empty($stokMenipis)): ?>
+                <?php foreach ($stokMenipis as $item): ?>
+                    <div class="activity-item">
+                        <?php
+                            $stok = (int)$item['stok'];
+                            $nama = esc($item['nama']);
+                            $icon = $stok == 0 ? '⚠️' : '🔔';
+                            $colorClass = $stok == 0 ? 'text-danger' : 'text-warning';
+                            $message = $stok == 0 ? "Stok <strong>{$nama}</strong> habis!" : "Stok <strong>{$nama}</strong> menipis, sisa <strong>{$stok}</strong> pcs.";
+                        ?>
+                        <span><?= $icon ?></span>
+                        <div class="flex-grow-1 <?= $colorClass ?>"><?= $message ?></div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-muted">Tidak ada notifikasi stok menipis saat ini.</p>
+            <?php endif; ?>
         </div>
     </div>
-</div>
 
-<?= $this->endSection(); ?>
+    <script>
+        // Data dari PHP
+        const chartLabels = <?= json_encode(array_column($chartData, 'bulan')) ?>;
+        const serviceData = <?= json_encode(array_column($chartData, 'jumlah')) ?>;
+        const incomeLabels = <?= json_encode(array_column($incomeChartData, 'bulan')) ?>;
+        const incomeData = <?= json_encode(array_column($incomeChartData, 'total')) ?>;
+
+        // Grafik Jumlah Servis
+        new Chart(document.getElementById('grafikBulanan'), {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Jumlah Servis',
+                    data: serviceData,
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+
+        // Grafik Pendapatan
+        new Chart(document.getElementById('grafikPendapatan'), {
+            type: 'line',
+            data: {
+                labels: incomeLabels,
+                datasets: [{
+                    label: 'Pendapatan',
+                    data: incomeData,
+                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                    borderColor: 'rgba(39, 174, 96, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: value => 'Rp ' + new Intl.NumberFormat('id-ID').format(value) }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

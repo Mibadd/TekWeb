@@ -1,73 +1,36 @@
 <?php
 
-namespace App\Controllers;
+    namespace App\Controllers;
 
-use App\Models\UserModel;
-use App\Models\LaporanModel;
-use CodeIgniter\Controller;
+    use App\Models\LaporanModel;
+    use App\Models\SukuCadangModel; // <--- TAMBAHKAN BARIS INI
+    use CodeIgniter\Controller;
 
-class AdminDashboard extends Controller
-{
-    public function index()
-{
-    $laporanModel = new LaporanModel();
-
-    $totalServices = $laporanModel->countAllServis();
-    $pendingRequests = $laporanModel->countPendingRequestsHariIni();
-    $income = $laporanModel->getTotalPendapatan();
-
-    $chartData = $laporanModel->getServisPerBulan();
-    $incomeChartData = $laporanModel->getPendapatanPerBulan(); // <-- Tambahan grafik pendapatan
-
-    $sukuCadangModel = new \App\Models\SukuCadangModel();
-    $sukuCadangMenipis = $sukuCadangModel->getSukuCadangMenipis();
-
-    $data = [
-        'totalServices' => $totalServices,
-        'pendingRequests' => $pendingRequests,
-        'income' => $income,
-        'chartData' => $chartData,
-        'incomeChartData' => $incomeChartData, // <-- dikirim ke view
-        'stokMenipis' => $sukuCadangMenipis
-    ];
-
-    return view('admin/dashboard', $data);
-}
-
-
-    public function manajemenPengguna()
+    class AdminDashboard extends Controller
     {
-        $userModel = new UserModel();
-        $users = $userModel->findAll();
+        public function index()
+        {
+            $laporanModel = new LaporanModel();
+            $sukuCadangModel = new SukuCadangModel(); // Sekarang class ini akan ditemukan
 
-        $data = [
-            'users' => $users
-        ];
+            $totalServices = $laporanModel->countAllServis();
+            $pendingRequests = $laporanModel->countPendingRequestsHariIni();
+            $income = $laporanModel->getTotalPendapatan();
+            $chartData = $laporanModel->getServisPerBulan();
+            $incomeChartData = $laporanModel->getPendapatanPerBulan();
+            $sukuCadangMenipis = $sukuCadangModel->getSukuCadangMenipis();
 
-        return view('admin/manajemenpengguna', $data);
+            $data = [
+                'totalServices' => $totalServices,
+                'pendingRequests' => $pendingRequests,
+                'income' => $income,
+                'chartData' => $chartData,
+                'incomeChartData' => $incomeChartData,
+                'stokMenipis' => $sukuCadangMenipis,
+                'admin_name' => session()->get('user_name') ?? 'Admin'
+            ];
+
+            return view('admin/dashboard', $data);
+        }
     }
     
-    public function datakendaraan()
-    {
-        return view('admin/datakendaraan'); // Tampilkan hanya view datakendaraan.php
-    }
-
-    public function sukucadang()
-    {
-        return view('admin/sukucadang'); // Tampilkan hanya view sukuCadang.php
-    }
-
-    public function statistik()
-    {
-        return view('admin/statistik'); // Tampilkan hanya view statistik.php
-    }
-    public function laporan()
-    {
-        return view('admin/laporan'); // Tampilkan hanya view laporan.php
-    }
-    public function logaktivitas()
-    {
-        return view('admin/logaktivitas'); // Tampilkan hanya view logaktivitas.php
-    }
-
-}
